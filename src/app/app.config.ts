@@ -18,6 +18,7 @@ import {
   accountsFeatureKey,
 } from './state/account/account.reducer';
 import { AccountEffects } from './state/account/account.effects';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -28,6 +29,6 @@ export const appConfig: ApplicationConfig = {
     provideEffects(ClientEffects),
     provideState(accountsFeatureKey, accountReducer),
     provideEffects(AccountEffects),
-    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
+    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }), provideAnimationsAsync(),
   ],
 };
