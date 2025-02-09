@@ -13,13 +13,10 @@ export interface Client {
     juridical: Address;
     factual: Address;
   };
-  avatarRequest$: Observable<string | undefined>;
+  avatarRequest$?: Observable<string | undefined>;
 }
 
-export enum Sex {
-  MALE,
-  FEMALE,
-}
+export type Sex = 'Male' | 'Female';
 
 interface Address {
   country: string;

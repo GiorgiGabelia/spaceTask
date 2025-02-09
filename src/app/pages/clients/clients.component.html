@@ -1,0 +1,18 @@
+<div class="flex justify-between mb-4">
+  <h1 class="text-2xl">Existing clients</h1>
+
+  <div class="flex gap-4">
+    <button mat-flat-button color="primary">
+      Add client <mat-icon>add</mat-icon>
+    </button>
+    <button mat-raised-button class="grow">
+      Filter <mat-icon>tune</mat-icon>
+    </button>
+  </div>
+</div>
+
+@if (clients$ | async; as mockClients) {
+  <app-generic-table [tableData]="mockClients"></app-generic-table>
+} @else {
+  no content message goes here
+}
