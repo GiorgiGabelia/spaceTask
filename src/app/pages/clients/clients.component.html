@@ -11,8 +11,11 @@
   </div>
 </div>
 
-@if (clients$ | async; as mockClients) {
-  <app-generic-table [tableData]="mockClients"></app-generic-table>
+@if (clients$ | async; as clients) {
+  <app-generic-table
+    [tableData]="clients"
+    (pageChange)="onPageChange($event)"
+  ></app-generic-table>
 } @else {
   no content message goes here
 }

@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, concatMap, switchMap } from 'rxjs/operators';
-import { Observable, EMPTY, of, pipe } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
+import { of } from 'rxjs';
 import { ClientActions } from './client.actions';
 import { ClientService } from '../../services/client.service';
 
@@ -14,8 +14,8 @@ export class ClientEffects {
     return this.actions$.pipe(
       ofType(ClientActions.loadClients),
       switchMap(({ page, pageSize }) =>
-        this.clientService.loadClients({ page, pageSize }).pipe(
-          map((clients) => ClientActions.loadClientsSuccess({ clients })),
+        this.clientService.getClients({ page, pageSize }).pipe(
+          map((response) => ClientActions.loadClientsSuccess(response)),
           catchError((err: Error) =>
             of(ClientActions.loadClientsError({ error: err.message })),
           ),

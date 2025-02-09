@@ -10,5 +10,14 @@ export const selectClients = createSelector(selectClientState, (state) =>
   selectAll(state),
 );
 
+export const selectClientSlice = (pageIndex: number) =>
+  createSelector(selectClientState, (state) => ({
+    clients: (state.paging?.pageClientIdMap[pageIndex] || [])
+      .map((id) => state.entities[id])
+      .filter((client) => !!client),
+    totalItems: state.paging?.totalClients,
+    pageSize: state.paging?.pageSize,
+  }));
+
 export const selectClientById = (clientId: string) =>
   createSelector(selectClientState, (state) => selectEntities(state));

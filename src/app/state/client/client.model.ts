@@ -1,5 +1,4 @@
 import { Observable } from 'rxjs';
-import { AccountType, Currency } from '../account/account.model';
 
 export interface Client {
   id: string;

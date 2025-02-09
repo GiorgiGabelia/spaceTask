@@ -1,4 +1,4 @@
-import { createFeature, createReducer, on } from '@ngrx/store';
+import { createReducer, on } from '@ngrx/store';
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { Client } from './client.model';
 import { ClientActions } from './client.actions';
@@ -7,9 +7,11 @@ export const clientsFeatureKey = 'clients';
 
 export interface State extends EntityState<Client> {
   loading: boolean;
-  empty?: boolean;
-  totalClients?: number;
-  currentPage?: number;
+  paging?: {
+    totalClients: number;
+    pageSize: number;
+    pageClientIdMap: { [page: number]: string[] };
+  };
 }
 
 export const adapter: EntityAdapter<Client> = createEntityAdapter<Client>();
@@ -20,8 +22,29 @@ export const initialState: State = adapter.getInitialState({
 
 export const reducer = createReducer(
   initialState,
-  on(ClientActions.loadClientsSuccess, (state, { clients }) =>
-    adapter.setAll(clients, state),
+  on(
+    ClientActions.loadClientsSuccess,
+    (state, { clients, page, totalItems, pageSize }) => {
+      const pageClientIdMap = { ...state.paging?.pageClientIdMap };
+
+      // Ensure totalItems is set
+      const total = state.paging?.totalClients ?? totalItems;
+
+      // Update pageClientIdMap
+      pageClientIdMap[page] = clients.map((client) => client.id);
+
+      // Add clients to the entity store
+      const updatedState = adapter.addMany(clients, state);
+
+      return {
+        ...updatedState,
+        paging: {
+          totalClients: total,
+          pageSize: state.paging?.pageSize ?? pageSize,
+          pageClientIdMap,
+        },
+      };
+    },
   ),
   // on(ClientActions.addClient, (state, action) =>
   //   adapter.addOne(action.client, state),

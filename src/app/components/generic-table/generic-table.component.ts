@@ -1,10 +1,12 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { NgClass, TitleCasePipe } from '@angular/common';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
 export interface TableData {
-  [columnName: string]: number | string;
+  data: { [columnName: string]: number | string }[];
+  totalItems: number;
+  pageSize: number;
 }
 
 @Component({
@@ -13,14 +15,16 @@ export interface TableData {
   templateUrl: './generic-table.component.html',
 })
 export class GenericTableComponent {
-  tableData = input.required<TableData[]>();
+  tableData = input.required<TableData>();
+  pageChange = output<{ currentIndex: number }>();
 
-  // todo: move this to pipe
+  // TODO: move this to pipe
   get columns() {
-    return Object.keys(this.tableData()[0]);
+    if (this.tableData().data[0]) return Object.keys(this.tableData().data[0]);
+    else return [];
   }
 
   handlePageEvent(e: PageEvent) {
-    console.log(e);
+    this.pageChange.emit({ currentIndex: e.pageIndex + 1 });
   }
 }

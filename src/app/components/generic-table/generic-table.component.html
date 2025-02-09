@@ -3,7 +3,7 @@
 >
   <table
     mat-table
-    [dataSource]="tableData()"
+    [dataSource]="tableData().data"
     class="flex h-full !min-w-max flex-col flex-nowrap"
   >
     @for (column of columns; track column) {
@@ -33,8 +33,8 @@
   </table>
 
   <mat-paginator
-    [length]="200"
-    [pageSizeOptions]="[10, 50, 100]"
+    [length]="tableData().totalItems"
+    [pageSizeOptions]="[tableData().pageSize]"
     showFirstLastButtons
     (page)="handlePageEvent($event)"
     aria-label="Select page"
