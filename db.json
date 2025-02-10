@@ -1,23 +1,23 @@
 {
   "clients": [
     {
-      "id": "1",
-      "clientNumber": 1001,
-      "name": "Giorgi",
-      "lastName": "Lomidze",
-      "sex": "Male",
-      "personalNumber": "12345678901",
-      "mobileNumber": 599123456,
+      "id": "21",
+      "clientNumber": 1021,
+      "name": "Nino",
+      "lastName": "Sikharulidze",
+      "sex": "Female",
+      "personalNumber": "21345678901",
+      "mobileNumber": 595678912,
       "address": {
         "juridical": {
           "city": "Tbilisi",
           "country": "Georgia",
-          "address": "Some street 6"
+          "address": "Some street 90"
         },
         "factual": {
           "city": "Tbilisi",
           "country": "Georgia",
-          "address": "Some street 6"
+          "address": "Some street 90"
         }
       }
     },
@@ -43,13 +43,13 @@
       }
     },
     {
-      "id": "3",
-      "clientNumber": 1003,
-      "name": "Nino",
-      "lastName": "Gelashvili",
-      "sex": "Female",
-      "personalNumber": "32345678901",
-      "mobileNumber": 577123789,
+      "id": "1",
+      "clientNumber": 1001,
+      "name": "Giorgi",
+      "lastName": "Lomidze",
+      "sex": "Male",
+      "personalNumber": "12345678901",
+      "mobileNumber": 599123456,
       "address": {
         "juridical": {
           "city": "Tbilisi",
@@ -85,34 +85,13 @@
       }
     },
     {
-      "id": "5",
-      "clientNumber": 1005,
-      "name": "Sandro",
-      "lastName": "Beridze",
-      "sex": "Male",
-      "personalNumber": "52345678901",
-      "mobileNumber": 595678234,
-      "address": {
-        "juridical": {
-          "city": "Tbilisi",
-          "country": "Georgia",
-          "address": "Some street 6"
-        },
-        "factual": {
-          "city": "Tbilisi",
-          "country": "Georgia",
-          "address": "Some street 6"
-        }
-      }
-    },
-    {
-      "id": "6",
-      "clientNumber": 1006,
-      "name": "Elene",
-      "lastName": "Kvitsiani",
+      "id": "3",
+      "clientNumber": 1003,
+      "name": "Nino",
+      "lastName": "Gelashvili",
       "sex": "Female",
-      "personalNumber": "62345678901",
-      "mobileNumber": 597456321,
+      "personalNumber": "32345678901",
+      "mobileNumber": 577123789,
       "address": {
         "juridical": {
           "city": "Tbilisi",
@@ -148,6 +127,27 @@
       }
     },
     {
+      "id": "5",
+      "clientNumber": 1005,
+      "name": "Sandro",
+      "lastName": "Beridze",
+      "sex": "Male",
+      "personalNumber": "52345678901",
+      "mobileNumber": 595678234,
+      "address": {
+        "juridical": {
+          "city": "Tbilisi",
+          "country": "Georgia",
+          "address": "Some street 6"
+        },
+        "factual": {
+          "city": "Tbilisi",
+          "country": "Georgia",
+          "address": "Some street 6"
+        }
+      }
+    },
+    {
       "id": "8",
       "clientNumber": 1008,
       "name": "Irakli",
@@ -169,34 +169,13 @@
       }
     },
     {
-      "id": "9",
-      "clientNumber": 1009,
-      "name": "Tamar",
-      "lastName": "Jorbenadze",
+      "id": "6",
+      "clientNumber": 1006,
+      "name": "Elene",
+      "lastName": "Kvitsiani",
       "sex": "Female",
-      "personalNumber": "92345678901",
-      "mobileNumber": 592341234,
-      "address": {
-        "juridical": {
-          "city": "Tbilisi",
-          "country": "Georgia",
-          "address": "Some street 6"
-        },
-        "factual": {
-          "city": "Tbilisi",
-          "country": "Georgia",
-          "address": "Some street 6"
-        }
-      }
-    },
-    {
-      "id": "10",
-      "clientNumber": 1010,
-      "name": "Vakhtang",
-      "lastName": "Papashvili",
-      "sex": "Male",
-      "personalNumber": "10345678901",
-      "mobileNumber": 590112233,
+      "personalNumber": "62345678901",
+      "mobileNumber": 597456321,
       "address": {
         "juridical": {
           "city": "Tbilisi",
@@ -232,6 +211,90 @@
       }
     },
     {
+      "id": "9",
+      "clientNumber": 1009,
+      "name": "Tamar",
+      "lastName": "Jorbenadze",
+      "sex": "Female",
+      "personalNumber": "92345678901",
+      "mobileNumber": 592341234,
+      "address": {
+        "juridical": {
+          "city": "Tbilisi",
+          "country": "Georgia",
+          "address": "Some street 6"
+        },
+        "factual": {
+          "city": "Tbilisi",
+          "country": "Georgia",
+          "address": "Some street 6"
+        }
+      }
+    },
+    {
+      "id": "15",
+      "clientNumber": 1015,
+      "name": "Ketevan",
+      "lastName": "Eristavi",
+      "sex": "Female",
+      "personalNumber": "15345678901",
+      "mobileNumber": 561234567,
+      "address": {
+        "juridical": {
+          "city": "Tbilisi",
+          "country": "Georgia",
+          "address": "Some street 30"
+        },
+        "factual": {
+          "city": "Tbilisi",
+          "country": "Georgia",
+          "address": "Some street 30"
+        }
+      }
+    },
+    {
+      "id": "10",
+      "clientNumber": 1010,
+      "name": "Vakhtang",
+      "lastName": "Papashvili",
+      "sex": "Male",
+      "personalNumber": "10345678901",
+      "mobileNumber": 590112233,
+      "address": {
+        "juridical": {
+          "city": "Tbilisi",
+          "country": "Georgia",
+          "address": "Some street 6"
+        },
+        "factual": {
+          "city": "Tbilisi",
+          "country": "Georgia",
+          "address": "Some street 6"
+        }
+      }
+    },
+    {
+      "id": "16",
+      "clientNumber": 1016,
+      "name": "Saba",
+      "lastName": "Shalvashi",
+      "sex": "Male",
+      "personalNumber": "16345678901",
+      "mobileNumber": 555123987,
+      "address": {
+        "juridical": {
+          "city": "Batumi",
+          "country": "Georgia",
+          "address": "Some street 40"
+        },
+        "factual": {
+          "city": "Batumi",
+          "country": "Georgia",
+          "address": "Some street 40"
+        }
+      }
+    },
+    {
       "id": "12",
       "clientNumber": 1012,
       "name": "Tamar",
@@ -249,6 +312,27 @@
           "city": "Batumi",
           "country": "Georgia",
           "address": "Some street 12"
+        }
+      }
+    },
+    {
+      "id": "17",
+      "clientNumber": 1017,
+      "name": "Mariami",
+      "lastName": "Mikadze",
+      "sex": "Female",
+      "personalNumber": "17345678901",
+      "mobileNumber": 576654321,
+      "address": {
+        "juridical": {
+          "city": "Kutaisi",
+          "country": "Georgia",
+          "address": "Some street 50"
+        },
+        "factual": {
+          "city": "Kutaisi",
+          "country": "Georgia",
+          "address": "Some street 50"
         }
       }
     },
@@ -295,69 +379,6 @@
       }
     },
     {
-      "id": "15",
-      "clientNumber": 1015,
-      "name": "Ketevan",
-      "lastName": "Eristavi",
-      "sex": "Female",
-      "personalNumber": "15345678901",
-      "mobileNumber": 561234567,
-      "address": {
-        "juridical": {
-          "city": "Tbilisi",
-          "country": "Georgia",
-          "address": "Some street 30"
-        },
-        "factual": {
-          "city": "Tbilisi",
-          "country": "Georgia",
-          "address": "Some street 30"
-        }
-      }
-    },
-    {
-      "id": "16",
-      "clientNumber": 1016,
-      "name": "Saba",
-      "lastName": "Shalvashi",
-      "sex": "Male",
-      "personalNumber": "16345678901",
-      "mobileNumber": 555123987,
-      "address": {
-        "juridical": {
-          "city": "Batumi",
-          "country": "Georgia",
-          "address": "Some street 40"
-        },
-        "factual": {
-          "city": "Batumi",
-          "country": "Georgia",
-          "address": "Some street 40"
-        }
-      }
-    },
-    {
-      "id": "17",
-      "clientNumber": 1017,
-      "name": "Mariami",
-      "lastName": "Mikadze",
-      "sex": "Female",
-      "personalNumber": "17345678901",
-      "mobileNumber": 576654321,
-      "address": {
-        "juridical": {
-          "city": "Kutaisi",
-          "country": "Georgia",
-          "address": "Some street 50"
-        },
-        "factual": {
-          "city": "Kutaisi",
-          "country": "Georgia",
-          "address": "Some street 50"
-        }
-      }
-    },
-    {
       "id": "18",
       "clientNumber": 1018,
       "name": "Beka",
@@ -375,27 +396,6 @@
           "city": "Zugdidi",
           "country": "Georgia",
           "address": "Some street 60"
-        }
-      }
-    },
-    {
-      "id": "19",
-      "clientNumber": 1019,
-      "name": "Lika",
-      "lastName": "Gvantseladze",
-      "sex": "Female",
-      "personalNumber": "19345678901",
-      "mobileNumber": 598876543,
-      "address": {
-        "juridical": {
-          "city": "Tbilisi",
-          "country": "Georgia",
-          "address": "Some street 70"
-        },
-        "factual": {
-          "city": "Tbilisi",
-          "country": "Georgia",
-          "address": "Some street 70"
         }
       }
     },
@@ -421,27 +421,6 @@
       }
     },
     {
-      "id": "21",
-      "clientNumber": 1021,
-      "name": "Nino",
-      "lastName": "Sikharulidze",
-      "sex": "Female",
-      "personalNumber": "21345678901",
-      "mobileNumber": 595678912,
-      "address": {
-        "juridical": {
-          "city": "Tbilisi",
-          "country": "Georgia",
-          "address": "Some street 90"
-        },
-        "factual": {
-          "city": "Tbilisi",
-          "country": "Georgia",
-          "address": "Some street 90"
-        }
-      }
-    },
-    {
       "id": "22",
       "clientNumber": 1022,
       "name": "Mikheil",
@@ -459,6 +438,27 @@
           "city": "Zugdidi",
           "country": "Georgia",
           "address": "Some street 100"
+        }
+      }
+    },
+    {
+      "id": "24",
+      "clientNumber": 1024,
+      "name": "Giorgi",
+      "lastName": "Gogoladze",
+      "sex": "Male",
+      "personalNumber": "24345678901",
+      "mobileNumber": 593456789,
+      "address": {
+        "juridical": {
+          "city": "Kutaisi",
+          "country": "Georgia",
+          "address": "Some street 120"
+        },
+        "factual": {
+          "city": "Kutaisi",
+          "country": "Georgia",
+          "address": "Some street 120"
         }
       }
     },
@@ -484,23 +484,23 @@
       }
     },
     {
-      "id": "24",
-      "clientNumber": 1024,
-      "name": "Giorgi",
-      "lastName": "Gogoladze",
-      "sex": "Male",
-      "personalNumber": "24345678901",
-      "mobileNumber": 593456789,
+      "id": "19",
+      "clientNumber": 1019,
+      "name": "Lika",
+      "lastName": "Gvantseladze",
+      "sex": "Female",
+      "personalNumber": "19345678901",
+      "mobileNumber": 598876543,
       "address": {
         "juridical": {
-          "city": "Kutaisi",
+          "city": "Tbilisi",
           "country": "Georgia",
-          "address": "Some street 120"
+          "address": "Some street 70"
         },
         "factual": {
-          "city": "Kutaisi",
+          "city": "Tbilisi",
           "country": "Georgia",
-          "address": "Some street 120"
+          "address": "Some street 70"
         }
       }
     }
