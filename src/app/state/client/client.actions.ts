@@ -1,7 +1,7 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import { Update } from '@ngrx/entity';
 import { Client } from './client.model';
-import { ClientSlice } from '../../services/models';
+import { ClientSlice } from '../../services/api/models';
 import { Sort } from '@angular/material/sort';
 
 export const ClientActions = createActionGroup({

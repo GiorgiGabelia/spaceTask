@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { ClientActions } from './client.actions';
-import { ClientService } from '../../services/client.service';
+import { ClientService } from '../../services/api/client.service';
 import { Sort } from '@angular/material/sort';
 
 @Injectable()

@@ -1,5 +1,5 @@
 import { Sort } from '@angular/material/sort';
-import { Client } from '../state/client/client.model';
+import { Client } from '../../state/client/client.model';
 
 export interface ClientSlice {
   clients: Client[];

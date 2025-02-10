@@ -1,9 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { map, Observable, of } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Client } from '../state/client/client.model';
-import { ClientSlice } from './models';
+import { Client } from '../../state/client/client.model';
 import { Sort } from '@angular/material/sort';
+import { ClientSlice } from './models';
 
 @Injectable({
   providedIn: 'root',

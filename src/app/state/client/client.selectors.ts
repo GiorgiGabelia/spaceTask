@@ -1,6 +1,5 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { adapter, clientsFeatureKey, State } from './client.reducer';
-import { ClientSlice } from '../../services/models';
 
 export const selectClientState =
   createFeatureSelector<State>(clientsFeatureKey);
