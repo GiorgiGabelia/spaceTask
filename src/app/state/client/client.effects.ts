@@ -13,8 +13,8 @@ export class ClientEffects {
   loadClients$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(ClientActions.loadClients),
-      switchMap(({ page, pageSize }) =>
-        this.clientService.getClients({ page, pageSize }).pipe(
+      switchMap(({ page, pageSize, sort }) =>
+        this.clientService.getClients({ page, pageSize, sort }).pipe(
           map((response) => ClientActions.loadClientsSuccess(response)),
           catchError((err: Error) =>
             of(ClientActions.loadClientsError({ error: err.message })),

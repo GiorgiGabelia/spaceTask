@@ -15,6 +15,7 @@
   <app-generic-table
     [tableData]="clients"
     (pageChange)="onPageChange($event)"
+    (sortChange)="onSortChange($event)"
   ></app-generic-table>
 } @else {
   no content message goes here

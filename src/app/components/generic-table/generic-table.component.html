@@ -3,15 +3,18 @@
 >
   <table
     mat-table
+    matSort
+    (matSortChange)="announceSortChange($event)"
     [dataSource]="tableData().data"
     class="flex h-full !min-w-max flex-col flex-nowrap"
   >
-    @for (column of columns; track column) {
+    @for (column of tableData().columns; track column) {
       <ng-container matColumnDef="{{ column }}">
         <mat-header-cell
           class="flex justify-center !px-0 !border-none"
           *matHeaderCellDef
-          >{{ column | titlecase }}</mat-header-cell
+          mat-sort-header
+          >{{ column | camelCaseToTitleCase }}</mat-header-cell
         >
         <mat-cell
           class="flex justify-center !px-0 !border-none"
@@ -22,9 +25,9 @@
       </ng-container>
     }
 
-    <mat-header-row *matHeaderRowDef="columns"> </mat-header-row>
+    <mat-header-row *matHeaderRowDef="tableData().columns"> </mat-header-row>
     <mat-row
-      *matRowDef="let row; columns: columns; let i = index"
+      *matRowDef="let row; columns: tableData().columns; let i = index"
       class="cursor-pointer"
       [ngClass]="{
         '!bg-rose-100': i % 2 === 0,
@@ -36,7 +39,7 @@
     [length]="tableData().totalItems"
     [pageSizeOptions]="[tableData().pageSize]"
     showFirstLastButtons
-    (page)="handlePageEvent($event)"
+    (page)="announcePageChange($event)"
     aria-label="Select page"
   >
   </mat-paginator>

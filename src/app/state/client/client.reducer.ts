@@ -2,6 +2,7 @@ import { createReducer, on } from '@ngrx/store';
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { Client } from './client.model';
 import { ClientActions } from './client.actions';
+import { Sort } from '@angular/material/sort';
 
 export const clientsFeatureKey = 'clients';
 
@@ -12,11 +13,13 @@ export interface State extends EntityState<Client> {
     pageSize: number;
     pageClientIdMap: { [page: number]: string[] };
   };
+  sort?: Sort;
 }
 
 export const adapter: EntityAdapter<Client> = createEntityAdapter<Client>();
 
 export const initialState: State = adapter.getInitialState({
+  // TODO: use loading in reducers
   loading: false,
 });
 
@@ -24,17 +27,24 @@ export const reducer = createReducer(
   initialState,
   on(
     ClientActions.loadClientsSuccess,
-    (state, { clients, page, totalItems, pageSize }) => {
-      const pageClientIdMap = { ...state.paging?.pageClientIdMap };
-
+    (state, { clients, page, totalItems, pageSize, sort }) => {
       // Ensure totalItems is set
       const total = state.paging?.totalClients ?? totalItems;
 
-      // Update pageClientIdMap
-      pageClientIdMap[page] = clients.map((client) => client.id);
+      const sortUpdated =
+        sort?.active !== state.sort?.active ||
+        sort?.direction !== state.sort?.direction;
 
-      // Add clients to the entity store
-      const updatedState = adapter.addMany(clients, state);
+      // If user changed sort state, override store with new entities, if not simply add the entities
+      const updatedState = sortUpdated
+        ? adapter.setAll(clients, state)
+        : adapter.addMany(clients, state);
+
+      const pageClientIdMap = sortUpdated
+        ? {}
+        : { ...state.paging?.pageClientIdMap };
+
+      pageClientIdMap[page] = clients.map((client) => client.id);
 
       return {
         ...updatedState,
@@ -43,6 +53,7 @@ export const reducer = createReducer(
           pageSize: state.paging?.pageSize ?? pageSize,
           pageClientIdMap,
         },
+        sort,
       };
     },
   ),

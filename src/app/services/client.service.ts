@@ -3,6 +3,7 @@ import { map, Observable, of } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Client } from '../state/client/client.model';
 import { ClientSlice } from './models';
+import { Sort } from '@angular/material/sort';
 
 @Injectable({
   providedIn: 'root',
@@ -17,10 +18,20 @@ export class ClientService {
   getClients(params: {
     page: number;
     pageSize: number;
+    sort?: Sort;
   }): Observable<ClientSlice> {
-    const httpParams = new HttpParams()
-      .set('_page', params.page)
-      .set('_limit', params.pageSize);
+    let httpParams = new HttpParams({
+      fromObject: {
+        _page: params.page,
+        _limit: params.pageSize,
+      },
+    });
+
+    if (params.sort?.direction) {
+      httpParams = httpParams
+        .append('_sort', params.sort.active)
+        .append('_order', params.sort.direction);
+    }
 
     return this.http
       .get(this.ROOT_URL + this.clientsPath, {
@@ -32,6 +43,7 @@ export class ClientService {
           clients: res.body as Client[],
           page: params.page,
           pageSize: params.pageSize,
+          sort: params.sort,
           totalItems: Number(res.headers.get('X-Total-Count')),
         })),
       );

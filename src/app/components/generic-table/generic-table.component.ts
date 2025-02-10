@@ -1,30 +1,39 @@
 import { Component, input, output } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
-import { NgClass, TitleCasePipe } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatSortModule, Sort } from '@angular/material/sort';
+import { CamelCaseToTitleCasePipe } from './camel-case-to-title-case.pipe';
 
-export interface TableData {
+export interface GenericTable {
   data: { [columnName: string]: number | string }[];
+  columns: string[];
   totalItems: number;
   pageSize: number;
 }
 
 @Component({
   selector: 'app-generic-table',
-  imports: [MatTableModule, NgClass, TitleCasePipe, MatPaginator],
+  imports: [
+    MatTableModule,
+    NgClass,
+    MatPaginator,
+    MatSortModule,
+    CamelCaseToTitleCasePipe,
+  ],
   templateUrl: './generic-table.component.html',
 })
 export class GenericTableComponent {
-  tableData = input.required<TableData>();
-  pageChange = output<{ currentIndex: number }>();
+  readonly pageChange = output<{ currentIndex: number }>();
+  readonly sortChange = output<Sort>();
 
-  // TODO: move this to pipe
-  get columns() {
-    if (this.tableData().data[0]) return Object.keys(this.tableData().data[0]);
-    else return [];
+  tableData = input.required<GenericTable>();
+
+  announcePageChange(e: PageEvent) {
+    this.pageChange.emit({ currentIndex: e.pageIndex + 1 });
   }
 
-  handlePageEvent(e: PageEvent) {
-    this.pageChange.emit({ currentIndex: e.pageIndex + 1 });
+  announceSortChange(e: Sort) {
+    this.sortChange.emit(e);
   }
 }

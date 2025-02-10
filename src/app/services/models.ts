@@ -1,3 +1,4 @@
+import { Sort } from '@angular/material/sort';
 import { Client } from '../state/client/client.model';
 
 export interface ClientSlice {
@@ -5,4 +6,5 @@ export interface ClientSlice {
   page: number;
   pageSize: number;
   totalItems: number;
+  sort?: Sort;
 }

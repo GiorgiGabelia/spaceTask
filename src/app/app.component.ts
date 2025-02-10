@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { ClientActions } from './state/client/client.actions';
 
 @Component({
   selector: 'app-root',

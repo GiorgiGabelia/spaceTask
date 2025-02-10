@@ -1,5 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { adapter, clientsFeatureKey, State } from './client.reducer';
+import { ClientSlice } from '../../services/models';
 
 export const selectClientState =
   createFeatureSelector<State>(clientsFeatureKey);
@@ -17,6 +18,7 @@ export const selectClientSlice = (pageIndex: number) =>
       .filter((client) => !!client),
     totalItems: state.paging?.totalClients,
     pageSize: state.paging?.pageSize,
+    sort: state.sort,
   }));
 
 export const selectClientById = (clientId: string) =>
