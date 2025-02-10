@@ -13,6 +13,8 @@ import { Client } from '../../state/client/client.model';
 import { MatIcon } from '@angular/material/icon';
 import { Sort } from '@angular/material/sort';
 import { SessionStorageService } from '../../services/session-storage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { FilterClientsComponent } from '../../components/filter-clients/filter-clients.component';
 
 export interface PageAndSortChange {
   currentIndex: number;
@@ -28,6 +30,7 @@ export interface PageAndSortChange {
 export class ClientsComponent {
   private readonly store = inject(Store);
   private readonly sessionStorageService = inject(SessionStorageService);
+  private readonly matDialog = inject(MatDialog);
 
   private readonly PAGE_SIZE = 5;
 
@@ -76,6 +79,16 @@ export class ClientsComponent {
       currentIndex: this.pageAndSortChange$.value.currentIndex,
       currentSortState: sortEvent,
     });
+  }
+
+  openFilterDialog() {
+    const dialogRef = this.matDialog.open(FilterClientsComponent, {
+      width: '40rem',
+      maxHeight: '90vh',
+      autoFocus: false,
+    });
+
+    dialogRef.afterClosed().subscribe(console.log);
   }
 
   private mapClientToTableRow(clientSlice: {

@@ -17,7 +17,7 @@ export interface Client {
 
 export type Sex = 'Male' | 'Female';
 
-interface Address {
+export interface Address {
   country: string;
   city: string;
   address: string;
