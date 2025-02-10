@@ -12,8 +12,9 @@ import { ClientActions } from '../../state/client/client.actions';
 import { Client } from '../../state/client/client.model';
 import { MatIcon } from '@angular/material/icon';
 import { Sort } from '@angular/material/sort';
+import { SessionStorageService } from '../../services/session-storage.service';
 
-interface PageAndSortChange {
+export interface PageAndSortChange {
   currentIndex: number;
   currentSortState?: Sort;
 }
@@ -26,11 +27,12 @@ interface PageAndSortChange {
 })
 export class ClientsComponent {
   private readonly store = inject(Store);
+  private readonly sessionStorageService = inject(SessionStorageService);
 
   private readonly PAGE_SIZE = 5;
 
   private readonly pageAndSortChange$ = new BehaviorSubject<PageAndSortChange>(
-    this.loadStateFromSessionStorage(),
+    this.sessionStorageService.loadStateFromSessionStorage(),
   );
 
   readonly clients$ = this.pageAndSortChange$.pipe(
@@ -50,6 +52,11 @@ export class ClientsComponent {
                 sort: currentSortState,
               }),
             );
+          } else {
+            this.sessionStorageService.saveStateToSessionStorage({
+              page: currentIndex,
+              sort,
+            });
           }
         }),
         map((clientSlice) => this.mapClientToTableRow(clientSlice)),
@@ -69,15 +76,6 @@ export class ClientsComponent {
       currentIndex: this.pageAndSortChange$.value.currentIndex,
       currentSortState: sortEvent,
     });
-  }
-
-  private loadStateFromSessionStorage(): PageAndSortChange {
-    const page = sessionStorage.getItem('page');
-    const sort = sessionStorage.getItem('sort');
-    return {
-      currentIndex: page ? JSON.parse(page) : 1,
-      currentSortState: sort ? JSON.parse(sort) : undefined,
-    };
   }
 
   private mapClientToTableRow(clientSlice: {

@@ -4,12 +4,13 @@ import { catchError, map, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { ClientActions } from './client.actions';
 import { ClientService } from '../../services/api/client.service';
-import { Sort } from '@angular/material/sort';
+import { SessionStorageService } from '../../services/session-storage.service';
 
 @Injectable()
 export class ClientEffects {
   private readonly actions$ = inject(Actions);
   private readonly clientService = inject(ClientService);
+  private readonly sessionStorageService = inject(SessionStorageService);
 
   loadClients$ = createEffect(() => {
     return this.actions$.pipe(
@@ -17,7 +18,7 @@ export class ClientEffects {
       switchMap(({ page, pageSize, sort }) =>
         this.clientService.getClients({ page, pageSize, sort }).pipe(
           map((response) => {
-            this.saveStateToSessionStorage({
+            this.sessionStorageService.saveStateToSessionStorage({
               page,
               sort,
             });
@@ -30,14 +31,4 @@ export class ClientEffects {
       ),
     );
   });
-
-  private saveStateToSessionStorage(state: { page: number; sort?: Sort }) {
-    const keys = Object.keys(state) as (keyof typeof state)[];
-
-    keys.forEach((key) => {
-      if (state[key]) {
-        sessionStorage.setItem(key, JSON.stringify(state[key]));
-      }
-    });
-  }
 }
