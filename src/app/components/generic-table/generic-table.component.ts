@@ -8,8 +8,12 @@ import { CamelCaseToTitleCasePipe } from './camel-case-to-title-case.pipe';
 export interface GenericTable {
   data: { [columnName: string]: number | string }[];
   columns: string[];
-  totalItems: number;
-  pageSize: number;
+  paging: {
+    totalItems: number;
+    pageSize: number;
+    pageIndex?: number;
+  };
+  sort?: Sort;
 }
 
 @Component({

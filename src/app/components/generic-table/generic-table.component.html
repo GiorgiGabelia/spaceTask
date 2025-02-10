@@ -4,6 +4,8 @@
   <table
     mat-table
     matSort
+    [matSortDirection]="tableData().sort?.direction || ''"
+    [matSortActive]="tableData().sort?.active || ''"
     (matSortChange)="announceSortChange($event)"
     [dataSource]="tableData().data"
     class="flex h-full !min-w-max flex-col flex-nowrap"
@@ -36,8 +38,9 @@
   </table>
 
   <mat-paginator
-    [length]="tableData().totalItems"
-    [pageSizeOptions]="[tableData().pageSize]"
+    [length]="tableData().paging.totalItems"
+    [pageSizeOptions]="[tableData().paging.pageSize]"
+    [pageIndex]="tableData().paging.pageIndex"
     showFirstLastButtons
     (page)="announcePageChange($event)"
     aria-label="Select page"

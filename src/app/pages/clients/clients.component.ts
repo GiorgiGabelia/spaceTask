@@ -13,6 +13,11 @@ import { Client } from '../../state/client/client.model';
 import { MatIcon } from '@angular/material/icon';
 import { Sort } from '@angular/material/sort';
 
+interface PageAndSortChange {
+  currentIndex: number;
+  currentSortState?: Sort;
+}
+
 @Component({
   selector: 'app-clients',
   imports: [MatButton, AsyncPipe, GenericTableComponent, MatIcon],
@@ -22,14 +27,13 @@ import { Sort } from '@angular/material/sort';
 export class ClientsComponent {
   private readonly store = inject(Store);
 
-  private readonly pageOrSortChange$ = new BehaviorSubject<{
-    currentIndex: number;
-    currentSortState?: Sort;
-  }>({ currentIndex: 1 });
+  private readonly PAGE_SIZE = 5;
 
-  readonly PAGE_SIZE = 5;
+  private readonly pageAndSortChange$ = new BehaviorSubject<PageAndSortChange>(
+    this.loadStateFromSessionStorage(),
+  );
 
-  readonly clients$ = this.pageOrSortChange$.pipe(
+  readonly clients$ = this.pageAndSortChange$.pipe(
     switchMap(({ currentIndex, currentSortState }) =>
       this.store.select(selectClientSlice(currentIndex)).pipe(
         tap(({ clients, sort }) => {
@@ -54,17 +58,26 @@ export class ClientsComponent {
   );
 
   onPageChange(pageEvent: { currentIndex: number }) {
-    this.pageOrSortChange$.next({
+    this.pageAndSortChange$.next({
       currentIndex: pageEvent.currentIndex,
-      currentSortState: this.pageOrSortChange$.value.currentSortState,
+      currentSortState: this.pageAndSortChange$.value.currentSortState,
     });
   }
 
   onSortChange(sortEvent: Sort) {
-    this.pageOrSortChange$.next({
-      currentIndex: this.pageOrSortChange$.value.currentIndex,
+    this.pageAndSortChange$.next({
+      currentIndex: this.pageAndSortChange$.value.currentIndex,
       currentSortState: sortEvent,
     });
+  }
+
+  private loadStateFromSessionStorage(): PageAndSortChange {
+    const page = sessionStorage.getItem('page');
+    const sort = sessionStorage.getItem('sort');
+    return {
+      currentIndex: page ? JSON.parse(page) : 1,
+      currentSortState: sort ? JSON.parse(sort) : undefined,
+    };
   }
 
   private mapClientToTableRow(clientSlice: {
@@ -81,8 +94,12 @@ export class ClientsComponent {
         personalNumber: client.personalNumber,
       })),
       columns: ['clientNumber', 'name', 'lastName', 'sex', 'personalNumber'],
-      totalItems: clientSlice.totalItems || 0,
-      pageSize: clientSlice.pageSize || 0,
+      paging: {
+        pageIndex: this.pageAndSortChange$.value.currentIndex - 1,
+        totalItems: clientSlice.totalItems || 0,
+        pageSize: clientSlice.pageSize || 0,
+      },
+      sort: this.pageAndSortChange$.value.currentSortState,
     };
   }
 }
