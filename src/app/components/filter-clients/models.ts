@@ -1,5 +1,5 @@
 import { FormControl, FormGroup } from '@angular/forms';
-import { Sex } from '../../state/client/client.model';
+import { Client, Sex } from '../../state/client/client.model';
 
 export interface FilterForm {
   clientNumber: FormControl<number | null>;
@@ -17,4 +17,23 @@ export interface FilterForm {
 export interface AddressFormGroup {
   city: FormControl<string | null>;
   country: FormControl<string | null>;
+}
+
+export interface FilterFormValues {
+  clientNumber: number | null;
+  name: string | null;
+  lastName: string | null;
+  sex: Sex | null;
+  personalNumber: string | null;
+  mobileNumber: number | null;
+  addresses: {
+    factual: {
+      city: string | null;
+      country: string | null;
+    };
+    juridical: {
+      city: string | null;
+      country: string | null;
+    };
+  };
 }

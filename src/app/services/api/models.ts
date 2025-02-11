@@ -7,4 +7,5 @@ export interface ClientSlice {
   pageSize: number;
   totalItems: number;
   sort?: Sort;
+  filters: string[];
 }

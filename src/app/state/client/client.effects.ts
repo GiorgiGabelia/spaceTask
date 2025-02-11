@@ -15,19 +15,29 @@ export class ClientEffects {
   loadClients$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(ClientActions.loadClients),
-      switchMap(({ page, pageSize, sort }) =>
-        this.clientService.getClients({ page, pageSize, sort }).pipe(
-          map((response) => {
-            this.sessionStorageService.saveStateToSessionStorage({
-              page,
-              sort,
-            });
-            return ClientActions.loadClientsSuccess(response);
-          }),
-          catchError((err: Error) =>
-            of(ClientActions.loadClientsError({ error: err.message })),
+      switchMap(({ page, pageSize, sort, filters }) =>
+        this.clientService
+          .getClients({
+            page,
+            pageSize,
+            sort,
+            filters:
+              filters ||
+              this.sessionStorageService.readFiltersStateFromSession(),
+          })
+          .pipe(
+            map((response) => {
+              this.sessionStorageService.saveStateToSessionStorage({
+                page,
+                sort,
+                filters,
+              });
+              return ClientActions.loadClientsSuccess(response);
+            }),
+            catchError((err: Error) =>
+              of(ClientActions.loadClientsError({ error: err.message })),
+            ),
           ),
-        ),
       ),
     );
   });

@@ -4,6 +4,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Client } from '../../state/client/client.model';
 import { Sort } from '@angular/material/sort';
 import { ClientSlice } from './models';
+import { FilterFormValues } from '../../components/filter-clients/models';
 
 @Injectable({
   providedIn: 'root',
@@ -19,13 +20,48 @@ export class ClientService {
     page: number;
     pageSize: number;
     sort?: Sort;
+    filters?: FilterFormValues;
   }): Observable<ClientSlice> {
+    console.log(params.filters);
+
     let httpParams = new HttpParams({
       fromObject: {
         _page: params.page,
         _limit: params.pageSize,
       },
     });
+
+    const usedFilters: string[] = [];
+
+    if (params.filters) {
+      const filterKeys = Object.keys(
+        params.filters,
+      ) as (keyof FilterFormValues)[];
+
+      filterKeys.forEach((key) => {
+        if (params.filters![key]) {
+          if (key === 'addresses') {
+            const {
+              httpParams: addressHttpParams,
+              usedFilters: addressFilters,
+            } = this.parseAndAppendAddressToGetRequest(
+              httpParams,
+              params.filters!.addresses,
+            );
+
+            addressFilters.forEach((filter) => usedFilters.push(filter));
+            httpParams = addressHttpParams;
+          } else {
+            usedFilters.push(key);
+            httpParams = this.appendHttpParams(
+              httpParams,
+              key + (key === 'sex' ? '' : '_like'),
+              String(params.filters![key]),
+            );
+          }
+        }
+      });
+    }
 
     if (params.sort?.direction) {
       httpParams = httpParams
@@ -45,7 +81,60 @@ export class ClientService {
           pageSize: params.pageSize,
           sort: params.sort,
           totalItems: Number(res.headers.get('X-Total-Count')),
+          filters: usedFilters,
         })),
       );
+  }
+
+  private appendHttpParams(httpParams: HttpParams, param: string, val: string) {
+    return httpParams.append(param, val);
+  }
+
+  //TODO: refactor this:
+  private parseAndAppendAddressToGetRequest(
+    httpParams: HttpParams,
+    addresses: FilterFormValues['addresses'],
+  ) {
+    const { city: factCity, country: factCountry } = addresses.factual;
+    const { city: jurCity, country: jurCountry } = addresses.juridical;
+    const usedFilters: string[] = [];
+
+    if (factCity) {
+      httpParams = this.appendHttpParams(
+        httpParams,
+        'addresses.factual.city_like',
+        String(addresses.factual.city),
+      );
+      usedFilters.push('addresses.factual.city');
+    }
+
+    if (factCountry) {
+      httpParams = this.appendHttpParams(
+        httpParams,
+        'addresses.factual.country_like',
+        String(addresses.factual.country),
+      );
+      usedFilters.push('addresses.factual.country');
+    }
+
+    if (jurCity) {
+      httpParams = this.appendHttpParams(
+        httpParams,
+        'addresses.juridical.city_like',
+        String(addresses.juridical.city),
+      );
+      usedFilters.push('addresses.juridical.city');
+    }
+
+    if (jurCountry) {
+      httpParams = this.appendHttpParams(
+        httpParams,
+        'addresses.juridical.country_like',
+        String(addresses.juridical.country),
+      );
+      usedFilters.push('addresses.juridical.country');
+    }
+
+    return { httpParams, usedFilters };
   }
 }

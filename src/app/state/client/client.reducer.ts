@@ -3,6 +3,7 @@ import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { Client } from './client.model';
 import { ClientActions } from './client.actions';
 import { Sort } from '@angular/material/sort';
+import { ClientSlice } from '../../services/api/models';
 
 export const clientsFeatureKey = 'clients';
 
@@ -14,6 +15,7 @@ export interface State extends EntityState<Client> {
     pageClientIdMap: { [page: number]: string[] };
   };
   sort?: Sort;
+  filters: ClientSlice['filters'];
 }
 
 export const adapter: EntityAdapter<Client> = createEntityAdapter<Client>();
@@ -21,39 +23,45 @@ export const adapter: EntityAdapter<Client> = createEntityAdapter<Client>();
 export const initialState: State = adapter.getInitialState({
   // TODO: use loading in reducers
   loading: false,
+  filters: [],
 });
 
 export const reducer = createReducer(
   initialState,
   on(
     ClientActions.loadClientsSuccess,
-    (state, { clients, page, totalItems, pageSize, sort }) => {
-      // Ensure totalItems is set
-      const total = state.paging?.totalClients ?? totalItems;
-
+    (state, { clients, page, totalItems, pageSize, sort, filters }) => {
       const sortUpdated =
         sort?.active !== state.sort?.active ||
         sort?.direction !== state.sort?.direction;
 
-      // If user changed sort state, override store with new entities, if not simply add the entities
-      const updatedState = sortUpdated
-        ? adapter.setAll(clients, state)
-        : adapter.addMany(clients, state);
+      const filterUpdated =
+        state.filters.some((filter) => !filters.includes(filter)) ||
+        filters.some((filter) => !state.filters.includes(filter));
 
-      const pageClientIdMap = sortUpdated
-        ? {}
-        : { ...state.paging?.pageClientIdMap };
+      // If user updated sort state or filters, override store with new entities
+      // If not, simply add the entities
+      const updatedState =
+        sortUpdated || filterUpdated
+          ? adapter.setAll(clients, state)
+          : adapter.addMany(clients, state);
+
+      const pageClientIdMap =
+        sortUpdated || filterUpdated
+          ? {}
+          : { ...state.paging?.pageClientIdMap };
 
       pageClientIdMap[page] = clients.map((client) => client.id);
 
       return {
         ...updatedState,
         paging: {
-          totalClients: total,
+          totalClients: totalItems,
           pageSize: state.paging?.pageSize ?? pageSize,
           pageClientIdMap,
         },
         sort,
+        filters,
       };
     },
   ),

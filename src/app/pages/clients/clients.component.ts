@@ -1,7 +1,7 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
-import { BehaviorSubject, map, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, map, switchMap, take, tap } from 'rxjs';
 import {
   GenericTableComponent,
   GenericTable,
@@ -15,8 +15,10 @@ import { Sort } from '@angular/material/sort';
 import { SessionStorageService } from '../../services/session-storage.service';
 import { MatDialog } from '@angular/material/dialog';
 import { FilterClientsComponent } from '../../components/filter-clients/filter-clients.component';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FilterFormValues } from '../../components/filter-clients/models';
 
-export interface PageAndSortChange {
+export interface PageAndSortState {
   currentIndex: number;
   currentSortState?: Sort;
 }
@@ -31,18 +33,19 @@ export class ClientsComponent {
   private readonly store = inject(Store);
   private readonly sessionStorageService = inject(SessionStorageService);
   private readonly matDialog = inject(MatDialog);
+  private readonly destroyRef = inject(DestroyRef);
 
   private readonly PAGE_SIZE = 5;
 
-  private readonly pageAndSortChange$ = new BehaviorSubject<PageAndSortChange>(
-    this.sessionStorageService.loadStateFromSessionStorage(),
+  private readonly pageAndSortState$ = new BehaviorSubject<PageAndSortState>(
+    this.sessionStorageService.readPageAndSortStateFromSession(),
   );
 
-  readonly clients$ = this.pageAndSortChange$.pipe(
+  readonly clients$ = this.pageAndSortState$.pipe(
     switchMap(({ currentIndex, currentSortState }) =>
       this.store.select(selectClientSlice(currentIndex)).pipe(
         tap(({ clients, sort }) => {
-          const pageNotYetFetched = !clients.length;
+          const pageNotYetFetched = !clients;
           const sortChanged =
             sort?.active !== currentSortState?.active ||
             sort?.direction !== currentSortState?.direction;
@@ -67,16 +70,16 @@ export class ClientsComponent {
     ),
   );
 
-  onPageChange(pageEvent: { currentIndex: number }) {
-    this.pageAndSortChange$.next({
+  changePage(pageEvent: { currentIndex: number }) {
+    this.pageAndSortState$.next({
       currentIndex: pageEvent.currentIndex,
-      currentSortState: this.pageAndSortChange$.value.currentSortState,
+      currentSortState: this.pageAndSortState$.value.currentSortState,
     });
   }
 
-  onSortChange(sortEvent: Sort) {
-    this.pageAndSortChange$.next({
-      currentIndex: this.pageAndSortChange$.value.currentIndex,
+  changeSort(sortEvent: Sort) {
+    this.pageAndSortState$.next({
+      currentIndex: this.pageAndSortState$.value.currentIndex,
       currentSortState: sortEvent,
     });
   }
@@ -88,29 +91,46 @@ export class ClientsComponent {
       autoFocus: false,
     });
 
-    dialogRef.afterClosed().subscribe(console.log);
+    dialogRef
+      .afterClosed()
+      .pipe(take(1), takeUntilDestroyed(this.destroyRef))
+      .subscribe((formValues?: FilterFormValues) => {
+        if (formValues) {
+          this.changePage({ currentIndex: 1 });
+
+          this.store.dispatch(
+            ClientActions.loadClients({
+              pageSize: this.PAGE_SIZE,
+              page: this.pageAndSortState$.value.currentIndex,
+              sort: this.pageAndSortState$.value.currentSortState,
+              filters: formValues,
+            }),
+          );
+        }
+      });
   }
 
   private mapClientToTableRow(clientSlice: {
-    clients: Client[];
+    clients: Client[] | null;
     totalItems: number | undefined;
     pageSize: number | undefined;
   }): GenericTable {
     return {
-      data: clientSlice.clients.map((client) => ({
-        clientNumber: client.clientNumber,
-        name: client.name,
-        lastName: client.lastName,
-        sex: client.sex,
-        personalNumber: client.personalNumber,
-      })),
+      data:
+        clientSlice.clients?.map((client) => ({
+          clientNumber: client.clientNumber,
+          name: client.name,
+          lastName: client.lastName,
+          sex: client.sex,
+          personalNumber: client.personalNumber,
+        })) || [],
       columns: ['clientNumber', 'name', 'lastName', 'sex', 'personalNumber'],
       paging: {
-        pageIndex: this.pageAndSortChange$.value.currentIndex - 1,
+        pageIndex: this.pageAndSortState$.value.currentIndex - 1,
         totalItems: clientSlice.totalItems || 0,
         pageSize: clientSlice.pageSize || 0,
       },
-      sort: this.pageAndSortChange$.value.currentSortState,
+      sort: this.pageAndSortState$.value.currentSortState,
     };
   }
 }

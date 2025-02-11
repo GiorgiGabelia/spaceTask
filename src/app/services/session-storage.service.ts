@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
-import { PageAndSortChange } from '../pages/clients/clients.component';
+import { PageAndSortState } from '../pages/clients/clients.component';
 import { Sort } from '@angular/material/sort';
+import { FilterFormValues } from '../components/filter-clients/models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SessionStorageService {
-  loadStateFromSessionStorage(): PageAndSortChange {
+  readPageAndSortStateFromSession(): PageAndSortState {
     const page = sessionStorage.getItem('page');
     const sort = sessionStorage.getItem('sort');
     return {
@@ -15,7 +16,16 @@ export class SessionStorageService {
     };
   }
 
-  saveStateToSessionStorage(state: { page: number; sort?: Sort }) {
+  readFiltersStateFromSession(): FilterFormValues {
+    const filters = sessionStorage.getItem('filters');
+    return filters ? JSON.parse(filters) : undefined;
+  }
+
+  saveStateToSessionStorage(state: {
+    page: number;
+    sort?: Sort;
+    filters?: FilterFormValues;
+  }) {
     const keys = Object.keys(state) as (keyof typeof state)[];
 
     keys.forEach((key) => {

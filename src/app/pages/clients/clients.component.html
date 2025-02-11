@@ -14,8 +14,8 @@
 @if (clients$ | async; as clients) {
   <app-generic-table
     [tableData]="clients"
-    (pageChange)="onPageChange($event)"
-    (sortChange)="onSortChange($event)"
+    (pageChange)="changePage($event)"
+    (sortChange)="changeSort($event)"
   ></app-generic-table>
 } @else {
   no content message goes here
