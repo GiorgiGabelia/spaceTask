@@ -1,4 +1,4 @@
-import { LowerCasePipe, KeyValuePipe } from '@angular/common';
+import { LowerCasePipe, KeyValuePipe, TitleCasePipe } from '@angular/common';
 import { Component, inject, input, Optional, output } from '@angular/core';
 import {
   ReactiveFormsModule,
@@ -37,6 +37,7 @@ import { FilterFormValues, FilterForm, AddressFormGroup } from './models';
     KeyValuePipe,
     MatRadioButton,
     MatRadioGroup,
+    TitleCasePipe,
   ],
   templateUrl: './client-form.component.html',
   styleUrl: './client-form.component.scss',
@@ -44,6 +45,7 @@ import { FilterFormValues, FilterForm, AddressFormGroup } from './models';
 export class ClientFormComponent {
   defaultValues = input<FilterFormValues>();
   displayCta = input(true);
+  allValuesRequired = input(false);
 
   form?: FormGroup<FilterForm>;
 
@@ -72,27 +74,45 @@ export class ClientFormComponent {
   }
 
   private initForm() {
-    this.form = new FormGroup({
-      clientNumber: new FormControl<number | null>(
-        this.defaultValues()?.clientNumber || null,
-      ),
-      name: new FormControl<string | null>(this.defaultValues()?.name || null, [
+    const validators = {
+      name: [
         Validators.minLength(2),
         Validators.maxLength(50),
         nameValidator(),
-      ]),
+      ],
+      mobileNum: [Validators.pattern(/^5.*/), Validators.maxLength(9)],
+      personalNum: [Validators.maxLength(11)],
+    };
+
+    if (this.allValuesRequired()) {
+      const keys = Object.keys(validators) as (keyof typeof validators)[];
+      keys.forEach((key) => validators[key].push(Validators.required));
+    }
+
+    this.form = new FormGroup({
+      clientNumber: new FormControl<number | null>(
+        this.defaultValues()?.clientNumber || null,
+        this.allValuesRequired() ? Validators.required : [],
+      ),
+      name: new FormControl<string | null>(
+        this.defaultValues()?.name || null,
+        validators.name,
+      ),
       lastName: new FormControl<string | null>(
         this.defaultValues()?.lastName || null,
-        [Validators.minLength(2), Validators.maxLength(50), nameValidator()],
+        validators.name,
       ),
-      sex: new FormControl<Sex | null>(this.defaultValues()?.sex || null),
+      sex: new FormControl<Sex | null>(
+        this.defaultValues()?.sex || null,
+        this.allValuesRequired() ? Validators.required : [],
+      ),
       personalNumber: new FormControl<string | null>(
         this.defaultValues()?.personalNumber || null,
-        Validators.maxLength(11),
+        validators.personalNum,
       ),
       mobileNumber: new FormControl<number | null>(
         this.defaultValues()?.mobileNumber || null,
-        [Validators.pattern(/^5.*/), Validators.maxLength(9)],
+        validators.mobileNum,
       ),
       // TODO: add address (street) to the form
       addresses: new FormGroup({
@@ -109,10 +129,12 @@ export class ClientFormComponent {
   private generateAddressFormGroup(
     type: 'FACTUAL' | 'JURIDICAL',
   ): AddressFormGroup {
+    const validator = this.allValuesRequired() ? Validators.required : [];
+
     if (!this.defaultValues()) {
       return {
-        city: new FormControl(null),
-        country: new FormControl(null),
+        city: new FormControl(null, validator),
+        country: new FormControl(null, validator),
       };
     }
 
@@ -122,8 +144,8 @@ export class ClientFormComponent {
       ];
 
     return {
-      city: new FormControl(city),
-      country: new FormControl(country),
+      city: new FormControl(city, validator),
+      country: new FormControl(country, validator),
     };
   }
 }
