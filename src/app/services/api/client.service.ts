@@ -4,7 +4,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Client } from '../../state/client/client.model';
 import { Sort } from '@angular/material/sort';
 import { ClientSlice } from './models';
-import { FilterFormValues } from '../../components/filter-clients/models';
+import { FilterFormValues } from '../../components/client-form/models';
 
 @Injectable({
   providedIn: 'root',
@@ -22,8 +22,6 @@ export class ClientService {
     sort?: Sort;
     filters?: FilterFormValues;
   }): Observable<ClientSlice> {
-    console.log(params.filters);
-
     let httpParams = new HttpParams({
       fromObject: {
         _page: params.page,

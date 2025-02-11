@@ -89,6 +89,7 @@ export class ClientsComponent {
       width: '40rem',
       maxHeight: '90vh',
       autoFocus: false,
+      data: this.sessionStorageService.readFiltersStateFromSession(),
     });
 
     dialogRef
