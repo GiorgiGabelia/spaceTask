@@ -17,6 +17,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FilterFormValues } from '../../components/client-form/models';
 import { FilterClientsDialogComponent } from '../../components/filter-clients-dialog/filter-clients-dialog.component';
+import { CreateClientDialogComponent } from '../../components/create-client-dialog/create-client-dialog.component';
 
 export interface PageAndSortState {
   currentIndex: number;
@@ -36,6 +37,12 @@ export class ClientsComponent {
   private readonly destroyRef = inject(DestroyRef);
 
   private readonly PAGE_SIZE = 5;
+
+  private readonly DIALOG_CONFIG = {
+    width: '40rem',
+    maxHeight: '90vh',
+    autoFocus: false,
+  };
 
   private readonly pageAndSortState$ = new BehaviorSubject<PageAndSortState>(
     this.sessionStorageService.readPageAndSortStateFromSession(),
@@ -85,11 +92,10 @@ export class ClientsComponent {
   }
 
   openFilterDialog() {
-    const dialogRef = this.matDialog.open(FilterClientsDialogComponent, {
-      width: '40rem',
-      maxHeight: '90vh',
-      autoFocus: false,
-    });
+    const dialogRef = this.matDialog.open(
+      FilterClientsDialogComponent,
+      this.DIALOG_CONFIG,
+    );
 
     dialogRef
       .afterClosed()
@@ -108,6 +114,13 @@ export class ClientsComponent {
           );
         }
       });
+  }
+
+  openCreateClientDialog() {
+    const dialogRef = this.matDialog.open(
+      CreateClientDialogComponent,
+      this.DIALOG_CONFIG,
+    );
   }
 
   private mapClientToTableRow(clientSlice: {

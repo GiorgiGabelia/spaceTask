@@ -1,10 +1,11 @@
 import { LowerCasePipe, KeyValuePipe } from '@angular/common';
-import { Component, inject, input, output } from '@angular/core';
+import { Component, inject, input, Optional, output } from '@angular/core';
 import {
   ReactiveFormsModule,
   FormGroup,
   FormControl,
   Validators,
+  FormGroupDirective,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import {
@@ -20,7 +21,6 @@ import { Sex } from '../../state/client/client.model';
 import { nameValidator } from '../../validators/validators';
 import { controlsWithSameTemplate } from './controlsWithSameTemplate';
 import { FilterFormValues, FilterForm, AddressFormGroup } from './models';
-import { SessionStorageService } from '../../services/session-storage.service';
 
 @Component({
   selector: 'app-client-form',
@@ -42,66 +42,74 @@ import { SessionStorageService } from '../../services/session-storage.service';
   styleUrl: './client-form.component.scss',
 })
 export class ClientFormComponent {
-  readonly formValues = inject(
-    SessionStorageService,
-  ).readFiltersStateFromSession();
+  defaultValues = input<FilterFormValues>();
+  displayCta = input(true);
 
-  submitFromHere = input(true);
+  form?: FormGroup<FilterForm>;
 
-  submittedFormValues = output<FilterFormValues>();
-
-  readonly filterForm: FormGroup<FilterForm> = new FormGroup({
-    clientNumber: new FormControl<number | null>(
-      this.formValues?.clientNumber || null,
-    ),
-    name: new FormControl<string | null>(this.formValues?.name || null, [
-      Validators.minLength(2),
-      Validators.maxLength(50),
-      nameValidator(),
-    ]),
-    lastName: new FormControl<string | null>(
-      this.formValues?.lastName || null,
-      [Validators.minLength(2), Validators.maxLength(50), nameValidator()],
-    ),
-    sex: new FormControl<Sex | null>(this.formValues?.sex || null),
-    personalNumber: new FormControl<string | null>(
-      this.formValues?.personalNumber || null,
-      Validators.maxLength(11),
-    ),
-    mobileNumber: new FormControl<number | null>(
-      this.formValues?.mobileNumber || null,
-      [Validators.pattern(/^5.*/), Validators.maxLength(9)],
-    ),
-    // TODO: add address (street) to the form
-    addresses: new FormGroup({
-      factual: new FormGroup<AddressFormGroup>(
-        this.generateAddressFormGroup('FACTUAL'),
-      ),
-      juridical: new FormGroup<AddressFormGroup>(
-        this.generateAddressFormGroup('JURIDICAL'),
-      ),
-    }),
-  });
-
+  readonly submitForm = output<FilterFormValues>();
   readonly controlsWithSameTemplate = controlsWithSameTemplate;
 
+  constructor(@Optional() private parentFormGroup: FormGroupDirective) {}
+
+  ngOnInit() {
+    this.initForm();
+    this.parentFormGroup?.form.addControl('clientFormGroup', this.form);
+  }
+
   resetControl(controlName: keyof FilterForm) {
-    this.filterForm.controls[controlName].reset();
+    this.form?.controls[controlName].reset();
   }
 
   clearAll() {
-    this.filterForm.reset();
+    this.form?.reset();
   }
 
   onSubmit() {
-    if (this.submitFromHere())
-      this.submittedFormValues.emit(this.filterForm.getRawValue());
+    if (this.form) {
+      this.submitForm.emit(this.form.getRawValue());
+    }
+  }
+
+  private initForm() {
+    this.form = new FormGroup({
+      clientNumber: new FormControl<number | null>(
+        this.defaultValues()?.clientNumber || null,
+      ),
+      name: new FormControl<string | null>(this.defaultValues()?.name || null, [
+        Validators.minLength(2),
+        Validators.maxLength(50),
+        nameValidator(),
+      ]),
+      lastName: new FormControl<string | null>(
+        this.defaultValues()?.lastName || null,
+        [Validators.minLength(2), Validators.maxLength(50), nameValidator()],
+      ),
+      sex: new FormControl<Sex | null>(this.defaultValues()?.sex || null),
+      personalNumber: new FormControl<string | null>(
+        this.defaultValues()?.personalNumber || null,
+        Validators.maxLength(11),
+      ),
+      mobileNumber: new FormControl<number | null>(
+        this.defaultValues()?.mobileNumber || null,
+        [Validators.pattern(/^5.*/), Validators.maxLength(9)],
+      ),
+      // TODO: add address (street) to the form
+      addresses: new FormGroup({
+        factual: new FormGroup<AddressFormGroup>(
+          this.generateAddressFormGroup('FACTUAL'),
+        ),
+        juridical: new FormGroup<AddressFormGroup>(
+          this.generateAddressFormGroup('JURIDICAL'),
+        ),
+      }),
+    });
   }
 
   private generateAddressFormGroup(
     type: 'FACTUAL' | 'JURIDICAL',
   ): AddressFormGroup {
-    if (!this.formValues) {
+    if (!this.defaultValues()) {
       return {
         city: new FormControl(null),
         country: new FormControl(null),
@@ -109,7 +117,9 @@ export class ClientFormComponent {
     }
 
     const { city, country } =
-      this.formValues!.addresses[type === 'FACTUAL' ? 'factual' : 'juridical'];
+      this.defaultValues()!.addresses[
+        type === 'FACTUAL' ? 'factual' : 'juridical'
+      ];
 
     return {
       city: new FormControl(city),

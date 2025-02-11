@@ -16,7 +16,7 @@ export class SessionStorageService {
     };
   }
 
-  readFiltersStateFromSession(): FilterFormValues {
+  readFiltersStateFromSession(): FilterFormValues | undefined {
     const filters = sessionStorage.getItem('filters');
     return filters ? JSON.parse(filters) : undefined;
   }

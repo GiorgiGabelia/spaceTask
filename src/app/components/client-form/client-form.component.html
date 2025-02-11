@@ -1,115 +1,117 @@
-<form [formGroup]="filterForm" (ngSubmit)="onSubmit()">
-  <div class="flex flex-col gap-2 mb-2" formGroupName="addresses">
-    <div>
-      <!-- TODO: refactor these 4 controls, avoid duplication -->
-      <p class="text-sm font-bold mb-2">Factual address</p>
-      <div formGroupName="factual" class="flex gap-2">
-        <mat-form-field
-          class="grow"
-          appearance="outline"
-          subscriptSizing="dynamic"
-        >
-          <mat-label>Filter by Country</mat-label>
-          <input matInput type="text" formControlName="country" />
-        </mat-form-field>
-
-        <mat-form-field
-          class="grow"
-          appearance="outline"
-          subscriptSizing="dynamic"
-        >
-          <mat-label>Filter by City</mat-label>
-          <input matInput type="text" formControlName="city" />
-        </mat-form-field>
-      </div>
-    </div>
-
-    <div>
-      <p class="text-sm font-bold mb-2">Juridical address</p>
-      <div formGroupName="juridical" class="flex gap-2">
-        <mat-form-field
-          class="grow"
-          appearance="outline"
-          subscriptSizing="dynamic"
-        >
-          <mat-label>Filter by Country</mat-label>
-          <input matInput type="text" formControlName="country" />
-        </mat-form-field>
-
-        <mat-form-field
-          class="grow"
-          appearance="outline"
-          subscriptSizing="dynamic"
-        >
-          <mat-label>Filter by City</mat-label>
-          <input matInput type="text" formControlName="city" />
-        </mat-form-field>
-      </div>
-    </div>
-  </div>
-
-  @for (control of controlsWithSameTemplate; track control.controlName) {
-    <div class="flex flex-col gap-2 mb-4">
-      <p class="text-sm font-bold">{{ control.label }}</p>
-      <mat-form-field appearance="outline" subscriptSizing="dynamic">
-        <mat-label>Filter by {{ control.label | lowercase }}</mat-label>
-        <input
-          matInput
-          [type]="control.inputType"
-          [formControlName]="control.controlName"
-        />
-        @if (filterForm.value[control.controlName]) {
-          <button
-            matSuffix
-            mat-icon-button
-            aria-label="Clear"
-            (click)="filterForm.controls[control.controlName].reset()"
+@if (form) {
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="flex flex-col gap-2 mb-2" formGroupName="addresses">
+      <div>
+        <!-- TODO: refactor these 4 controls, avoid duplication -->
+        <p class="text-sm font-bold mb-2">Factual address</p>
+        <div formGroupName="factual" class="flex gap-2">
+          <mat-form-field
+            class="grow"
+            appearance="outline"
+            subscriptSizing="dynamic"
           >
-            <mat-icon>close</mat-icon>
-          </button>
-        }
-      </mat-form-field>
-      @if (filterForm.controls[control.controlName].errors; as errors) {
-        @for (error of errors | keyvalue; track error.key) {
-          <mat-error>
-            {{ control.errorMessageMapping?.[error.key] || error.key }}
-          </mat-error>
-        }
-      }
+            <mat-label>Filter by Country</mat-label>
+            <input matInput type="text" formControlName="country" />
+          </mat-form-field>
+
+          <mat-form-field
+            class="grow"
+            appearance="outline"
+            subscriptSizing="dynamic"
+          >
+            <mat-label>Filter by City</mat-label>
+            <input matInput type="text" formControlName="city" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div>
+        <p class="text-sm font-bold mb-2">Juridical address</p>
+        <div formGroupName="juridical" class="flex gap-2">
+          <mat-form-field
+            class="grow"
+            appearance="outline"
+            subscriptSizing="dynamic"
+          >
+            <mat-label>Filter by Country</mat-label>
+            <input matInput type="text" formControlName="country" />
+          </mat-form-field>
+
+          <mat-form-field
+            class="grow"
+            appearance="outline"
+            subscriptSizing="dynamic"
+          >
+            <mat-label>Filter by City</mat-label>
+            <input matInput type="text" formControlName="city" />
+          </mat-form-field>
+        </div>
+      </div>
     </div>
-  }
 
-  <div class="flex flex-col gap-2">
-    <mat-label class="text-sm font-bold">Sex</mat-label>
-    <mat-radio-group
-      formControlName="sex"
-      aria-label="Select an option"
-      class="flex flex-col"
-    >
-      <mat-radio-button value="Male"> Male</mat-radio-button>
-      <mat-radio-button value="Female"> Female </mat-radio-button>
-    </mat-radio-group>
-  </div>
+    @for (control of controlsWithSameTemplate; track control.controlName) {
+      <div class="flex flex-col gap-2 mb-4">
+        <p class="text-sm font-bold">{{ control.label }}</p>
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Filter by {{ control.label | lowercase }}</mat-label>
+          <input
+            matInput
+            [type]="control.inputType"
+            [formControlName]="control.controlName"
+          />
+          @if (form.value[control.controlName]) {
+            <button
+              matSuffix
+              mat-icon-button
+              aria-label="Clear"
+              (click)="form.controls[control.controlName].reset()"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          }
+        </mat-form-field>
+        @if (form.controls[control.controlName].errors; as errors) {
+          @for (error of errors | keyvalue; track error.key) {
+            <mat-error>
+              {{ control.errorMessageMapping?.[error.key] || error.key }}
+            </mat-error>
+          }
+        }
+      </div>
+    }
 
-  @if (submitFromHere()) {
-    <div class="mt-4 grid grid-cols-2 gap-2">
-      <button
-        mat-raised-button
-        class="!ml-0 h-10 w-full !border !border-solid !border-neutral-600 px-6 py-2 !shadow-none"
-        type="button"
-        (click)="clearAll()"
+    <div class="flex flex-col gap-2">
+      <mat-label class="text-sm font-bold">Sex</mat-label>
+      <mat-radio-group
+        formControlName="sex"
+        aria-label="Select an option"
+        class="flex flex-col"
       >
-        Clear all
-      </button>
-
-      <button
-        mat-flat-button
-        class="h-10 w-full !bg-primary-500 px-6 py-2 !text-primary-A100"
-        [disabled]="!filterForm.valid"
-        type="submit"
-      >
-        Apply
-      </button>
+        <mat-radio-button value="Male"> Male</mat-radio-button>
+        <mat-radio-button value="Female"> Female </mat-radio-button>
+      </mat-radio-group>
     </div>
-  }
-</form>
+
+    @if (displayCta()) {
+      <div class="mt-4 grid grid-cols-2 gap-2">
+        <button
+          mat-raised-button
+          class="!ml-0 h-10 w-full !border !border-solid !border-neutral-600 px-6 py-2 !shadow-none"
+          type="button"
+          (click)="clearAll()"
+        >
+          Clear all
+        </button>
+
+        <button
+          mat-flat-button
+          class="h-10 w-full !bg-primary-500 px-6 py-2 !text-primary-A100"
+          [disabled]="!form.valid"
+          type="submit"
+        >
+          Apply
+        </button>
+      </div>
+    }
+  </form>
+}

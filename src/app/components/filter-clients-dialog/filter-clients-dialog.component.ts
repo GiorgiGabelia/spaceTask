@@ -7,6 +7,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FilterFormValues } from '../client-form/models';
 import { ClientFormComponent } from '../client-form/client-form.component';
+import { SessionStorageService } from '../../services/session-storage.service';
 
 @Component({
   selector: 'app-filter-clients-dialog',
@@ -23,6 +24,10 @@ import { ClientFormComponent } from '../client-form/client-form.component';
 })
 export class FilterClientsDialogComponent {
   private readonly matDialog = inject(MatDialogRef);
+
+  readonly formValues = inject(
+    SessionStorageService,
+  ).readFiltersStateFromSession();
 
   onSubmit(values: FilterFormValues) {
     this.matDialog.close(values);

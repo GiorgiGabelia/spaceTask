@@ -1,12 +1,11 @@
 <section class="p-8">
   <div class="flex justify-between">
-    <h3 class="text-xl font-medium">Filter by</h3>
+    <h3 class="text-xl font-medium">Add new client</h3>
     <mat-icon class="cursor-pointer" mat-dialog-close>close</mat-icon>
   </div>
   <mat-divider class="!my-8"></mat-divider>
 
-  <app-client-form
-    (submitForm)="onSubmit($event)"
-    [defaultValues]="formValues"
-  ></app-client-form>
+  <form [formGroup]="createClientForm">
+    <app-client-form [displayCta]="false"></app-client-form>
+  </form>
 </section>
