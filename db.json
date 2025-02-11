@@ -8,7 +8,7 @@
       "sex": "Female",
       "personalNumber": "21345678901",
       "mobileNumber": 595678912,
-      "address": {
+      "addresses": {
         "juridical": {
           "city": "Tbilisi",
           "country": "Georgia",
@@ -29,7 +29,7 @@
       "sex": "Female",
       "personalNumber": "22345678901",
       "mobileNumber": 555987654,
-      "address": {
+      "addresses": {
         "juridical": {
           "city": "Tbilisi",
           "country": "Georgia",
@@ -50,7 +50,7 @@
       "sex": "Male",
       "personalNumber": "12345678901",
       "mobileNumber": 599123456,
-      "address": {
+      "addresses": {
         "juridical": {
           "city": "Tbilisi",
           "country": "Georgia",
@@ -71,7 +71,7 @@
       "sex": "Male",
       "personalNumber": "42345678901",
       "mobileNumber": 593456789,
-      "address": {
+      "addresses": {
         "juridical": {
           "city": "Tbilisi",
           "country": "Georgia",
@@ -92,7 +92,7 @@
       "sex": "Female",
       "personalNumber": "32345678901",
       "mobileNumber": 577123789,
-      "address": {
+      "addresses": {
         "juridical": {
           "city": "Tbilisi",
           "country": "Georgia",
@@ -113,7 +113,7 @@
       "sex": "Female",
       "personalNumber": "72345678901",
       "mobileNumber": 591234987,
-      "address": {
+      "addresses": {
         "juridical": {
           "city": "Tbilisi",
           "country": "Georgia",
@@ -134,7 +134,7 @@
       "sex": "Male",
       "personalNumber": "52345678901",
       "mobileNumber": 595678234,
-      "address": {
+      "addresses": {
         "juridical": {
           "city": "Tbilisi",
           "country": "Georgia",
@@ -155,7 +155,7 @@
       "sex": "Male",
       "personalNumber": "82345678901",
       "mobileNumber": 598765432,
-      "address": {
+      "addresses": {
         "juridical": {
           "city": "Tbilisi",
           "country": "Georgia",
@@ -176,7 +176,7 @@
       "sex": "Female",
       "personalNumber": "62345678901",
       "mobileNumber": 597456321,
-      "address": {
+      "addresses": {
         "juridical": {
           "city": "Tbilisi",
           "country": "Georgia",
@@ -197,7 +197,7 @@
       "sex": "Male",
       "personalNumber": "11345678901",
       "mobileNumber": 599987654,
-      "address": {
+      "addresses": {
         "juridical": {
           "city": "Batumi",
           "country": "Georgia",
@@ -218,7 +218,7 @@
       "sex": "Female",
       "personalNumber": "92345678901",
       "mobileNumber": 592341234,
-      "address": {
+      "addresses": {
         "juridical": {
           "city": "Tbilisi",
           "country": "Georgia",
@@ -239,7 +239,7 @@
       "sex": "Female",
       "personalNumber": "15345678901",
       "mobileNumber": 561234567,
-      "address": {
+      "addresses": {
         "juridical": {
           "city": "Tbilisi",
           "country": "Georgia",
@@ -260,7 +260,7 @@
       "sex": "Male",
       "personalNumber": "10345678901",
       "mobileNumber": 590112233,
-      "address": {
+      "addresses": {
         "juridical": {
           "city": "Tbilisi",
           "country": "Georgia",
@@ -281,7 +281,7 @@
       "sex": "Male",
       "personalNumber": "16345678901",
       "mobileNumber": 555123987,
-      "address": {
+      "addresses": {
         "juridical": {
           "city": "Batumi",
           "country": "Georgia",
@@ -302,7 +302,7 @@
       "sex": "Female",
       "personalNumber": "12345678902",
       "mobileNumber": 593456321,
-      "address": {
+      "addresses": {
         "juridical": {
           "city": "Batumi",
           "country": "Georgia",
@@ -323,7 +323,7 @@
       "sex": "Female",
       "personalNumber": "17345678901",
       "mobileNumber": 576654321,
-      "address": {
+      "addresses": {
         "juridical": {
           "city": "Kutaisi",
           "country": "Georgia",
@@ -344,7 +344,7 @@
       "sex": "Female",
       "personalNumber": "13345678901",
       "mobileNumber": 576123456,
-      "address": {
+      "addresses": {
         "juridical": {
           "city": "Kutaisi",
           "country": "Georgia",
@@ -365,7 +365,7 @@
       "sex": "Male",
       "personalNumber": "14345678901",
       "mobileNumber": 598765432,
-      "address": {
+      "addresses": {
         "juridical": {
           "city": "Zugdidi",
           "country": "Georgia",
@@ -386,7 +386,7 @@
       "sex": "Male",
       "personalNumber": "18345678901",
       "mobileNumber": 592345678,
-      "address": {
+      "addresses": {
         "juridical": {
           "city": "Zugdidi",
           "country": "Georgia",
@@ -407,7 +407,7 @@
       "sex": "Male",
       "personalNumber": "20345678901",
       "mobileNumber": 591234567,
-      "address": {
+      "addresses": {
         "juridical": {
           "city": "Batumi",
           "country": "Georgia",
@@ -428,7 +428,7 @@
       "sex": "Male",
       "personalNumber": "22345678901",
       "mobileNumber": 561234765,
-      "address": {
+      "addresses": {
         "juridical": {
           "city": "Zugdidi",
           "country": "Georgia",
@@ -449,7 +449,7 @@
       "sex": "Male",
       "personalNumber": "24345678901",
       "mobileNumber": 593456789,
-      "address": {
+      "addresses": {
         "juridical": {
           "city": "Kutaisi",
           "country": "Georgia",
@@ -470,7 +470,7 @@
       "sex": "Female",
       "personalNumber": "23345678901",
       "mobileNumber": 592345678,
-      "address": {
+      "addresses": {
         "juridical": {
           "city": "Batumi",
           "country": "Georgia",
@@ -491,7 +491,7 @@
       "sex": "Female",
       "personalNumber": "19345678901",
       "mobileNumber": 598876543,
-      "address": {
+      "addresses": {
         "juridical": {
           "city": "Tbilisi",
           "country": "Georgia",

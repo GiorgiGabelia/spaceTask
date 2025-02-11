@@ -8,7 +8,7 @@ export interface Client {
   sex: Sex;
   personalNumber: string;
   mobileNumber: number;
-  address: {
+  addresses: {
     juridical: Address;
     factual: Address;
   };
@@ -20,5 +20,5 @@ export type Sex = 'Male' | 'Female';
 export interface Address {
   country: string;
   city: string;
-  address: string;
+  address?: string;
 }
