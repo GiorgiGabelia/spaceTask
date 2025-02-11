@@ -14,9 +14,9 @@ import { MatIcon } from '@angular/material/icon';
 import { Sort } from '@angular/material/sort';
 import { SessionStorageService } from '../../services/session-storage.service';
 import { MatDialog } from '@angular/material/dialog';
-import { FilterClientsComponent } from '../../components/filter-clients/filter-clients.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FilterFormValues } from '../../components/filter-clients/models';
+import { FilterFormValues } from '../../components/client-form/models';
+import { FilterClientsDialogComponent } from '../../components/filter-clients-dialog/filter-clients-dialog.component';
 
 export interface PageAndSortState {
   currentIndex: number;
@@ -85,11 +85,10 @@ export class ClientsComponent {
   }
 
   openFilterDialog() {
-    const dialogRef = this.matDialog.open(FilterClientsComponent, {
+    const dialogRef = this.matDialog.open(FilterClientsDialogComponent, {
       width: '40rem',
       maxHeight: '90vh',
       autoFocus: false,
-      data: this.sessionStorageService.readFiltersStateFromSession(),
     });
 
     dialogRef

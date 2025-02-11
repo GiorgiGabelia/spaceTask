@@ -3,7 +3,7 @@ import { Update } from '@ngrx/entity';
 import { Client } from './client.model';
 import { ClientSlice } from '../../services/api/models';
 import { Sort } from '@angular/material/sort';
-import { FilterFormValues } from '../../components/filter-clients/models';
+import { FilterFormValues } from '../../components/client-form/models';
 
 export const ClientActions = createActionGroup({
   source: 'Client/API',

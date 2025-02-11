@@ -1,4 +1,4 @@
-import { FilterForm } from './models';
+import { FilterForm } from '../client-form/models';
 
 export const controlsWithSameTemplate: {
   controlName: keyof FilterForm;

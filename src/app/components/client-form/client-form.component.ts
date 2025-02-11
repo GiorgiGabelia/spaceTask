@@ -1,33 +1,30 @@
-import { Component, inject } from '@angular/core';
+import { LowerCasePipe, KeyValuePipe } from '@angular/common';
+import { Component, inject, input, output } from '@angular/core';
 import {
-  FormControl,
-  FormGroup,
   ReactiveFormsModule,
+  FormGroup,
+  FormControl,
   Validators,
 } from '@angular/forms';
-import { MatButton, MatButtonModule } from '@angular/material/button';
-import { MAT_DIALOG_DATA, MatDialogClose } from '@angular/material/dialog';
-import { MatDivider } from '@angular/material/divider';
-import { MatIcon } from '@angular/material/icon';
-import { Sex } from '../../state/client/client.model';
+import { MatButtonModule } from '@angular/material/button';
 import {
   MatFormField,
-  MatFormFieldModule,
   MatLabel,
   MatSuffix,
+  MatFormFieldModule,
 } from '@angular/material/form-field';
+import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
-import { KeyValuePipe, LowerCasePipe } from '@angular/common';
-import { nameValidator } from '../../validators/validators';
 import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
-import { AddressFormGroup, FilterForm, FilterFormValues } from './models';
+import { Sex } from '../../state/client/client.model';
+import { nameValidator } from '../../validators/validators';
 import { controlsWithSameTemplate } from './controlsWithSameTemplate';
+import { FilterFormValues, FilterForm, AddressFormGroup } from './models';
+import { SessionStorageService } from '../../services/session-storage.service';
 
 @Component({
-  selector: 'app-filter-clients',
+  selector: 'app-client-form',
   imports: [
-    MatDialogClose,
-    MatDivider,
     MatIcon,
     ReactiveFormsModule,
     MatFormField,
@@ -41,11 +38,17 @@ import { controlsWithSameTemplate } from './controlsWithSameTemplate';
     MatRadioButton,
     MatRadioGroup,
   ],
-  templateUrl: './filter-clients.component.html',
-  styleUrl: './filter-clients.component.scss',
+  templateUrl: './client-form.component.html',
+  styleUrl: './client-form.component.scss',
 })
-export class FilterClientsComponent {
-  formValues?: FilterFormValues = inject(MAT_DIALOG_DATA);
+export class ClientFormComponent {
+  readonly formValues = inject(
+    SessionStorageService,
+  ).readFiltersStateFromSession();
+
+  submitFromHere = input(true);
+
+  submittedFormValues = output<FilterFormValues>();
 
   readonly filterForm: FormGroup<FilterForm> = new FormGroup({
     clientNumber: new FormControl<number | null>(
@@ -69,6 +72,7 @@ export class FilterClientsComponent {
       this.formValues?.mobileNumber || null,
       [Validators.pattern(/^5.*/), Validators.maxLength(9)],
     ),
+    // TODO: add address (street) to the form
     addresses: new FormGroup({
       factual: new FormGroup<AddressFormGroup>(
         this.generateAddressFormGroup('FACTUAL'),
@@ -89,6 +93,11 @@ export class FilterClientsComponent {
     this.filterForm.reset();
   }
 
+  onSubmit() {
+    if (this.submitFromHere())
+      this.submittedFormValues.emit(this.filterForm.getRawValue());
+  }
+
   private generateAddressFormGroup(
     type: 'FACTUAL' | 'JURIDICAL',
   ): AddressFormGroup {
@@ -100,7 +109,7 @@ export class FilterClientsComponent {
     }
 
     const { city, country } =
-      this.formValues?.addresses[type === 'FACTUAL' ? 'factual' : 'juridical'];
+      this.formValues!.addresses[type === 'FACTUAL' ? 'factual' : 'juridical'];
 
     return {
       city: new FormControl(city),

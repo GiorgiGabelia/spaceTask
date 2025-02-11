@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { PageAndSortState } from '../pages/clients/clients.component';
 import { Sort } from '@angular/material/sort';
-import { FilterFormValues } from '../components/filter-clients/models';
+import { FilterFormValues } from '../components/client-form/models';
 
 @Injectable({
   providedIn: 'root',
