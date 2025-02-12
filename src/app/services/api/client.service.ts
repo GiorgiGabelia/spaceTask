@@ -90,6 +90,12 @@ export class ClientService {
       .pipe(map((client) => client as Client));
   }
 
+  updateClient(client: Client) {
+    return this.http
+      .put(this.ROOT_URL + this.clientsPath + `/${client.id}`, client)
+      .pipe(map((client) => client as Client));
+  }
+
   private appendHttpParams(httpParams: HttpParams, param: string, val: string) {
     return httpParams.append(param, val);
   }

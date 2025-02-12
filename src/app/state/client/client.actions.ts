@@ -19,9 +19,9 @@ export const ClientActions = createActionGroup({
     'Add Client': props<{ client: Client }>(),
     'Add Client Success': props<{ client: Client }>(),
     'Add Client Error': props<{ error: string }>(),
-    'Upsert Client': props<{ client: Client }>(),
-    'Update Client': props<{ client: Update<Client> }>(),
+    'Update Client': props<{ client: Client }>(),
+    'Update Client Success': props<{ client: Client }>(),
+    'Update Client Error': props<{ error: string }>(),
     'Delete Client': props<{ id: string }>(),
-    'Clear Clients': emptyProps(),
   },
 });

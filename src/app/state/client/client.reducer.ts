@@ -68,12 +68,9 @@ export const reducer = createReducer(
   // on(ClientActions.addClient, (state, action) =>
   //   adapter.addOne(action.client, state),
   // ),
-  // on(ClientActions.upsertClient, (state, action) =>
-  //   adapter.upsertOne(action.client, state),
-  // ),
-  // on(ClientActions.updateClient, (state, action) =>
-  //   adapter.updateOne(action.client, state),
-  // ),
+  on(ClientActions.updateClientSuccess, (state, { client }) =>
+    adapter.updateOne({ id: client.id, changes: client }, state),
+  ),
   // on(ClientActions.deleteClient, (state, action) =>
   //   adapter.removeOne(action.id, state),
   // ),

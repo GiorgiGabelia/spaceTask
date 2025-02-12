@@ -77,6 +77,7 @@ export class ClientFormComponent implements OnInit {
   onSubmit() {
     if (this.form) {
       this.submitForm.emit(this.form.getRawValue());
+      this.form?.markAsUntouched();
     }
   }
 
@@ -90,6 +91,7 @@ export class ClientFormComponent implements OnInit {
         this.form?.patchValue({
           avatar: reader.result as string,
         });
+        this.form?.markAsTouched();
       };
       reader.readAsDataURL(file);
     }

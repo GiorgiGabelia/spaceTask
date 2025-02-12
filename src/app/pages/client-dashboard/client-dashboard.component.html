@@ -1,0 +1,29 @@
+@if (client$ | async; as client) {
+  <div class="2xl:px-[30%] px-0">
+    <div class="flex justify-between items-center">
+      <h2 class="text-4xl medium my-6">
+        Client {{ client.name }} {{ client.lastName }}
+      </h2>
+      <button mat-stroked-button>
+        <mat-icon class="!mx-auto !my-0">delete</mat-icon>
+        Delete client
+      </button>
+    </div>
+
+    <mat-tab-group
+      mat-stretch-tabs="false"
+      dynamicHeight
+      mat-align-tabs="center"
+      [selectedIndex]="1"
+    >
+      <mat-tab label="Accounts"> Accounts goes here</mat-tab>
+      <mat-tab label="Client">
+        <h2 class="text-3xl medium my-6">Edit client</h2>
+        <app-client-form
+          [defaultValues]="client"
+          (submitForm)="updateClient($event, client.id)"
+        ></app-client-form>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+}
