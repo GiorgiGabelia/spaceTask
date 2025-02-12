@@ -1,18 +1,15 @@
-import { LowerCasePipe, KeyValuePipe, TitleCasePipe } from '@angular/common';
 import {
-  Component,
-  inject,
-  input,
-  OnInit,
-  Optional,
-  output,
-} from '@angular/core';
+  LowerCasePipe,
+  KeyValuePipe,
+  TitleCasePipe,
+  NgClass,
+} from '@angular/common';
+import { Component, input, OnInit, output } from '@angular/core';
 import {
   ReactiveFormsModule,
   FormGroup,
   FormControl,
   Validators,
-  FormGroupDirective,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import {
@@ -24,7 +21,7 @@ import {
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
-import { Sex } from '../../state/client/client.model';
+import { Client, Sex } from '../../state/client/client.model';
 import {
   exactLengthValidator,
   nameValidator,
@@ -51,26 +48,22 @@ import { FilterFormValues, FilterForm, AddressFormGroup } from './models';
     MatRadioButton,
     MatRadioGroup,
     TitleCasePipe,
+    NgClass,
   ],
   templateUrl: './client-form.component.html',
   styleUrl: './client-form.component.scss',
 })
 export class ClientFormComponent implements OnInit {
   defaultValues = input<FilterFormValues>();
-  displayCta = input(true);
   usedForFiltering = input(false);
-  allValuesRequired = input(false);
 
   form?: FormGroup<FilterForm>;
 
   readonly submitForm = output<FilterFormValues>();
   readonly controlsWithSameTemplate = controlsWithSameTemplate;
 
-  constructor(@Optional() private parentFormGroup: FormGroupDirective) {}
-
   ngOnInit() {
     this.initForm();
-    this.parentFormGroup?.form.addControl('clientFormGroup', this.form);
   }
 
   resetControl(controlName: keyof FilterForm) {
@@ -84,6 +77,21 @@ export class ClientFormComponent implements OnInit {
   onSubmit() {
     if (this.form) {
       this.submitForm.emit(this.form.getRawValue());
+    }
+  }
+
+  selectFile(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input?.files?.[0];
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.form?.patchValue({
+          avatar: reader.result as string,
+        });
+      };
+      reader.readAsDataURL(file);
     }
   }
 
@@ -107,7 +115,7 @@ export class ClientFormComponent implements OnInit {
       ],
     };
 
-    if (this.allValuesRequired()) {
+    if (!this.usedForFiltering()) {
       const keys = Object.keys(validators) as (keyof typeof validators)[];
       keys.forEach((key) => validators[key].push(Validators.required));
     }
@@ -115,7 +123,7 @@ export class ClientFormComponent implements OnInit {
     this.form = new FormGroup({
       clientNumber: new FormControl<number | null>(
         this.defaultValues()?.clientNumber || null,
-        this.allValuesRequired() ? Validators.required : [],
+        !this.usedForFiltering() ? Validators.required : [],
       ),
       name: new FormControl<string | null>(
         this.defaultValues()?.name || null,
@@ -127,7 +135,7 @@ export class ClientFormComponent implements OnInit {
       ),
       sex: new FormControl<Sex | null>(
         this.defaultValues()?.sex || null,
-        this.allValuesRequired() ? Validators.required : [],
+        !this.usedForFiltering() ? Validators.required : [],
       ),
       personalNumber: new FormControl<string | null>(
         this.defaultValues()?.personalNumber || null,
@@ -146,13 +154,14 @@ export class ClientFormComponent implements OnInit {
           this.generateAddressFormGroup('JURIDICAL'),
         ),
       }),
+      avatar: new FormControl(this.defaultValues()?.avatar || null),
     });
   }
 
   private generateAddressFormGroup(
     type: 'FACTUAL' | 'JURIDICAL',
   ): AddressFormGroup {
-    const validator = this.allValuesRequired() ? Validators.required : [];
+    const validator = !this.usedForFiltering() ? Validators.required : [];
 
     if (!this.defaultValues()) {
       return {

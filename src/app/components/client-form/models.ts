@@ -12,6 +12,7 @@ export interface FilterForm {
     factual: FormGroup<AddressFormGroup>;
     juridical: FormGroup<AddressFormGroup>;
   }>;
+  avatar: FormControl<string | null>;
 }
 
 export interface AddressFormGroup {
@@ -36,4 +37,5 @@ export interface FilterFormValues {
       country: string | null;
     };
   };
+  avatar?: string | null;
 }
