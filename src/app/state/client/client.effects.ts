@@ -12,8 +12,8 @@ export class ClientEffects {
   private readonly clientService = inject(ClientService);
   private readonly sessionStorageService = inject(SessionStorageService);
 
-  loadClients$ = createEffect(() => {
-    return this.actions$.pipe(
+  loadClients$ = createEffect(() =>
+    this.actions$.pipe(
       ofType(ClientActions.loadClients),
       switchMap(({ page, pageSize, sort, filters }) =>
         this.clientService
@@ -39,6 +39,20 @@ export class ClientEffects {
             ),
           ),
       ),
-    );
-  });
+    ),
+  );
+
+  addClient$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ClientActions.addClient),
+      switchMap(({ client }) =>
+        this.clientService.createClient(client).pipe(
+          map((client) => ClientActions.addClientSuccess({ client })),
+          catchError((err: Error) =>
+            of(ClientActions.loadClientsError({ error: err.message })),
+          ),
+        ),
+      ),
+    ),
+  );
 }

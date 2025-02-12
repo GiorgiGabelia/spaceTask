@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { map, Observable, of } from 'rxjs';
+import { map, Observable, of, tap } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Client } from '../../state/client/client.model';
 import { Sort } from '@angular/material/sort';
@@ -82,6 +82,12 @@ export class ClientService {
           filters: usedFilters,
         })),
       );
+  }
+
+  createClient(client: Omit<Client, 'id'>) {
+    return this.http
+      .post(this.ROOT_URL + this.clientsPath, client)
+      .pipe(map((client) => client as Client));
   }
 
   private appendHttpParams(httpParams: HttpParams, param: string, val: string) {

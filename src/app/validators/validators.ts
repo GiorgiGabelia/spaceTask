@@ -17,3 +17,14 @@ export function nameValidator(): ValidatorFn {
     return { invalidInput: true };
   };
 }
+
+export function exactLengthValidator(length: number): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value;
+
+    if (value && value.toString().length !== length) {
+      return { invalidLength: true };
+    }
+    return null;
+  };
+}

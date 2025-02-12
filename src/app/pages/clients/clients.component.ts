@@ -121,6 +121,15 @@ export class ClientsComponent {
       CreateClientDialogComponent,
       this.DIALOG_CONFIG,
     );
+
+    dialogRef
+      .afterClosed()
+      .pipe(take(1), takeUntilDestroyed(this.destroyRef))
+      .subscribe((client?: Client) => {
+        if (client) {
+          this.store.dispatch(ClientActions.addClient({ client }));
+        }
+      });
   }
 
   private mapClientToTableRow(clientSlice: {

@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { MatDialogClose } from '@angular/material/dialog';
+import { MatDialogClose, MatDialogRef } from '@angular/material/dialog';
 import { MatDivider } from '@angular/material/divider';
 import { MatIcon } from '@angular/material/icon';
 import { ClientFormComponent } from '../client-form/client-form.component';
 import { MatButton } from '@angular/material/button';
 import { NgClass } from '@angular/common';
+import { FilterForm } from '../client-form/models';
 
 @Component({
   selector: 'app-create-client-dialog',
@@ -21,28 +22,25 @@ import { NgClass } from '@angular/common';
   templateUrl: './create-client-dialog.component.html',
 })
 export class CreateClientDialogComponent {
-  createClientForm = new FormGroup({
-    profilePicture: new FormControl<Blob | null>(null),
+  private readonly matDialogRef = inject(MatDialogRef);
+
+  createClientForm: FormGroup<{
+    profilePictureURL: FormControl<string | null>;
+    clientFormGroup?: FormGroup<FilterForm>;
+  }> = new FormGroup({
+    profilePictureURL: new FormControl<string | null>(null),
   });
-
-  profilePictureUrl: string | null = null;
-
-  ngOnInit() {
-    this.createClientForm.valueChanges.subscribe(console.log);
-  }
 
   selectFile(event: Event): void {
     const input = event.target as HTMLInputElement;
     const file = input?.files?.[0];
 
     if (file) {
-      this.createClientForm.patchValue({
-        profilePicture: file,
-      });
-
       const reader = new FileReader();
       reader.onload = () => {
-        this.profilePictureUrl = reader.result as string;
+        this.createClientForm.patchValue({
+          profilePictureURL: reader.result as string,
+        });
       };
       reader.readAsDataURL(file);
     }
@@ -50,5 +48,12 @@ export class CreateClientDialogComponent {
 
   clearAll() {
     this.createClientForm.reset();
+  }
+
+  onSubmit() {
+    this.matDialogRef.close({
+      avatar: this.createClientForm.value.profilePictureURL,
+      ...this.createClientForm.value.clientFormGroup,
+    });
   }
 }

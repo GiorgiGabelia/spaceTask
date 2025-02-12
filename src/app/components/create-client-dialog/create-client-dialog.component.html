@@ -5,17 +5,22 @@
   </div>
   <mat-divider class="!my-8"></mat-divider>
 
-  <form [formGroup]="createClientForm">
+  <form [formGroup]="createClientForm" (ngSubmit)="onSubmit()">
     <p class="text-sm font-bold mb-2">Profile picture</p>
 
     <div class="flex mb-2 flex-col items-center">
       <div
         class="size-30 rounded-full"
-        [ngClass]="{ 'size-72': !!profilePictureUrl }"
+        [ngClass]="{
+          'size-72': !!createClientForm.get('profilePictureURL')?.value,
+        }"
       >
         <img
           class="size-full"
-          [src]="profilePictureUrl || 'assets/no-pfp.svg'"
+          [src]="
+            createClientForm.get('profilePictureURL')?.value ||
+            'assets/no-pfp.svg'
+          "
         />
       </div>
 

@@ -12,7 +12,7 @@ export interface Client {
     juridical: Address;
     factual: Address;
   };
-  avatarRequest$?: Observable<string | undefined>;
+  avatar: string;
 }
 
 export type Sex = 'Male' | 'Female';

@@ -1,5 +1,12 @@
 import { LowerCasePipe, KeyValuePipe, TitleCasePipe } from '@angular/common';
-import { Component, inject, input, Optional, output } from '@angular/core';
+import {
+  Component,
+  inject,
+  input,
+  OnInit,
+  Optional,
+  output,
+} from '@angular/core';
 import {
   ReactiveFormsModule,
   FormGroup,
@@ -18,8 +25,14 @@ import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 import { Sex } from '../../state/client/client.model';
-import { nameValidator } from '../../validators/validators';
-import { controlsWithSameTemplate } from './controlsWithSameTemplate';
+import {
+  exactLengthValidator,
+  nameValidator,
+} from '../../validators/validators';
+import {
+  controlsWithSameTemplate,
+  VALIDATION_CONSTANTS,
+} from './controlsWithSameTemplate';
 import { FilterFormValues, FilterForm, AddressFormGroup } from './models';
 
 @Component({
@@ -42,9 +55,10 @@ import { FilterFormValues, FilterForm, AddressFormGroup } from './models';
   templateUrl: './client-form.component.html',
   styleUrl: './client-form.component.scss',
 })
-export class ClientFormComponent {
+export class ClientFormComponent implements OnInit {
   defaultValues = input<FilterFormValues>();
   displayCta = input(true);
+  usedForFiltering = input(false);
   allValuesRequired = input(false);
 
   form?: FormGroup<FilterForm>;
@@ -76,12 +90,21 @@ export class ClientFormComponent {
   private initForm() {
     const validators = {
       name: [
-        Validators.minLength(2),
-        Validators.maxLength(50),
+        Validators.minLength(VALIDATION_CONSTANTS.NAME_MIN),
+        Validators.maxLength(VALIDATION_CONSTANTS.NAME_MAX),
         nameValidator(),
       ],
-      mobileNum: [Validators.pattern(/^5.*/), Validators.maxLength(9)],
-      personalNum: [Validators.maxLength(11)],
+      mobileNum: [
+        Validators.pattern(/^5.*/),
+        this.usedForFiltering()
+          ? Validators.maxLength(VALIDATION_CONSTANTS.MOB_NUM_LENGTH)
+          : exactLengthValidator(VALIDATION_CONSTANTS.MOB_NUM_LENGTH),
+      ],
+      personalNum: [
+        this.usedForFiltering()
+          ? Validators.maxLength(VALIDATION_CONSTANTS.PERS_NUM_LENGTH)
+          : exactLengthValidator(VALIDATION_CONSTANTS.PERS_NUM_LENGTH),
+      ],
     };
 
     if (this.allValuesRequired()) {
