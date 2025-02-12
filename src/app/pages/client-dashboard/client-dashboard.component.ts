@@ -1,7 +1,7 @@
 import { Component, DestroyRef, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { of, switchMap, take } from 'rxjs';
+import { of, switchMap, take, tap } from 'rxjs';
 import { selectClientById } from '../../state/client/client.selectors';
 import { AsyncPipe } from '@angular/common';
 import { ClientFormComponent } from '../../components/client-form/client-form.component';
@@ -39,7 +39,15 @@ export class ClientDashboardComponent {
   client$ = this.route.paramMap.pipe(
     switchMap((params) => {
       const id = params.get('id');
-      return id ? this.store.select(selectClientById(id)) : of(null);
+      return id
+        ? this.store.select(selectClientById(id)).pipe(
+            tap((client) => {
+              if (!client) {
+                this.store.dispatch(ClientActions.loadClient({ id }));
+              }
+            }),
+          )
+        : of(null);
     }),
   );
 

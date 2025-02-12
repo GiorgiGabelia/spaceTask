@@ -39,10 +39,34 @@ export class ClientEffects {
 
               return ClientActions.loadClientsSuccess(response);
             }),
-            catchError((err: Error) =>
-              of(ClientActions.loadClientsError({ error: err.message })),
-            ),
+            catchError((err: Error) => {
+              this.snackBarService.open(
+                'Error fetching the clients, please refresh the page to try again.',
+                'FAIL',
+              );
+              return of(ClientActions.loadClientsError({ error: err.message }));
+            }),
           ),
+      ),
+    ),
+  );
+
+  loadClient$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ClientActions.loadClient),
+      switchMap(({ id }) =>
+        this.clientService.getClient(id).pipe(
+          map((client) => {
+            return ClientActions.loadClientSuccess({ client });
+          }),
+          catchError((err: Error) => {
+            this.snackBarService.open(
+              'Error fetching the client, please refresh the page to try again.',
+              'FAIL',
+            );
+            return of(ClientActions.loadClientError({ error: err.message }));
+          }),
+        ),
       ),
     ),
   );

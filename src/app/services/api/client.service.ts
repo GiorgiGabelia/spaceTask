@@ -84,6 +84,12 @@ export class ClientService {
       );
   }
 
+  getClient(id: string) {
+    return this.http
+      .get(this.ROOT_URL + this.clientsPath + `/${id}`)
+      .pipe(map((client) => client as Client));
+  }
+
   createClient(client: Omit<Client, 'id'>) {
     return this.http
       .post(this.ROOT_URL + this.clientsPath, client)

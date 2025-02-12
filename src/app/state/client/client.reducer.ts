@@ -65,6 +65,9 @@ export const reducer = createReducer(
       };
     },
   ),
+  on(ClientActions.loadClientSuccess, (state, action) =>
+    adapter.addOne(action.client, state),
+  ),
   // on(ClientActions.addClient, (state, action) =>
   //   adapter.addOne(action.client, state),
   // ),
