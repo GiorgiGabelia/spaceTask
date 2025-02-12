@@ -5,8 +5,10 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSortModule, Sort } from '@angular/material/sort';
 import { CamelCaseToTitleCasePipe } from './camel-case-to-title-case.pipe';
 
+type Row = { [columnName: string]: number | string; id: string };
+
 export interface GenericTable {
-  data: { [columnName: string]: number | string }[];
+  rows: Row[];
   columns: string[];
   paging: {
     totalItems: number;
@@ -30,6 +32,7 @@ export interface GenericTable {
 export class GenericTableComponent {
   readonly pageChange = output<{ currentIndex: number }>();
   readonly sortChange = output<Sort>();
+  readonly entityClicked = output<{ id: string }>();
 
   tableData = input.required<GenericTable>();
 
@@ -39,5 +42,9 @@ export class GenericTableComponent {
 
   announceSortChange(e: Sort) {
     this.sortChange.emit(e);
+  }
+
+  onRowClick(row: Row) {
+    this.entityClicked.emit({ id: row.id });
   }
 }

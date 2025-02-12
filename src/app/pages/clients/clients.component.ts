@@ -18,6 +18,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FilterFormValues } from '../../components/client-form/models';
 import { FilterClientsDialogComponent } from '../../components/filter-clients-dialog/filter-clients-dialog.component';
 import { CreateClientDialogComponent } from '../../components/create-client-dialog/create-client-dialog.component';
+import { Router } from '@angular/router';
 
 export interface PageAndSortState {
   currentIndex: number;
@@ -35,6 +36,7 @@ export class ClientsComponent {
   private readonly sessionStorageService = inject(SessionStorageService);
   private readonly matDialog = inject(MatDialog);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly router = inject(Router);
 
   private readonly PAGE_SIZE = 5;
 
@@ -91,6 +93,10 @@ export class ClientsComponent {
     });
   }
 
+  navigateToClientDashboard(res: { id: string }) {
+    this.router.navigate(['/client', res.id]);
+  }
+
   openFilterDialog() {
     const dialogRef = this.matDialog.open(
       FilterClientsDialogComponent,
@@ -138,13 +144,14 @@ export class ClientsComponent {
     pageSize: number | undefined;
   }): GenericTable {
     return {
-      data:
+      rows:
         clientSlice.clients?.map((client) => ({
           clientNumber: client.clientNumber,
           name: client.name,
           lastName: client.lastName,
           sex: client.sex,
           personalNumber: client.personalNumber,
+          id: client.id,
         })) || [],
       columns: ['clientNumber', 'name', 'lastName', 'sex', 'personalNumber'],
       paging: {

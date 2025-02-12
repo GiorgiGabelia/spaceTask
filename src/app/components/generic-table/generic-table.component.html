@@ -7,7 +7,7 @@
     [matSortDirection]="tableData().sort?.direction || ''"
     [matSortActive]="tableData().sort?.active || ''"
     (matSortChange)="announceSortChange($event)"
-    [dataSource]="tableData().data"
+    [dataSource]="tableData().rows"
     class="flex h-full !min-w-max flex-col flex-nowrap"
   >
     @for (column of tableData().columns; track column) {
@@ -31,6 +31,7 @@
     <mat-row
       *matRowDef="let row; columns: tableData().columns; let i = index"
       class="cursor-pointer"
+      (click)="onRowClick(row)"
       [ngClass]="{
         '!bg-rose-100': i % 2 === 0,
       }"

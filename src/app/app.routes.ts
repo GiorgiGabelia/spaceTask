@@ -13,4 +13,11 @@ export const routes: Routes = [
         (m) => m.ClientsComponent,
       ),
   },
+  {
+    path: 'client/:id',
+    loadComponent: () =>
+      import('./pages/client-dashboard/client-dashboard.component').then(
+        (m) => m.ClientDashboardComponent,
+      ),
+  },
 ];

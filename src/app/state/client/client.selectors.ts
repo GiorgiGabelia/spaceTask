@@ -27,4 +27,4 @@ export const selectClientSlice = (pageIndex: number) =>
   });
 
 export const selectClientById = (clientId: string) =>
-  createSelector(selectClientState, (state) => selectEntities(state));
+  createSelector(selectClientState, (state) => state.entities[clientId]);
