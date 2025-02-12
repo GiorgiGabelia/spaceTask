@@ -23,5 +23,7 @@ export const ClientActions = createActionGroup({
     'Update Client Success': props<{ client: Client }>(),
     'Update Client Error': props<{ error: string }>(),
     'Delete Client': props<{ id: string }>(),
+    'Delete Client Success': props<{ id: string }>(),
+    'Delete Client error': props<{ error: string }>(),
   },
 });

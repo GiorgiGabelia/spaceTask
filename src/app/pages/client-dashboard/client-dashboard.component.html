@@ -4,7 +4,7 @@
       <h2 class="text-4xl medium my-6">
         Client {{ client.name }} {{ client.lastName }}
       </h2>
-      <button mat-stroked-button>
+      <button mat-stroked-button (click)="openCancelDialog(client.id)">
         <mat-icon class="!mx-auto !my-0">delete</mat-icon>
         Delete client
       </button>

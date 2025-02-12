@@ -71,11 +71,9 @@ export const reducer = createReducer(
   on(ClientActions.updateClientSuccess, (state, { client }) =>
     adapter.updateOne({ id: client.id, changes: client }, state),
   ),
-  // on(ClientActions.deleteClient, (state, action) =>
-  //   adapter.removeOne(action.id, state),
-  // ),
-
-  // on(ClientActions.clearClients, (state) => adapter.removeAll(state)),
+  on(ClientActions.deleteClient, (state, action) =>
+    adapter.removeOne(action.id, state),
+  ),
 );
 
 // export const clientsFeature = createFeature({

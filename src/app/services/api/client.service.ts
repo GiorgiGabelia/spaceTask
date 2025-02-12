@@ -96,6 +96,10 @@ export class ClientService {
       .pipe(map((client) => client as Client));
   }
 
+  deleteClient(id: string) {
+    return this.http.delete(this.ROOT_URL + this.clientsPath + `/${id}`);
+  }
+
   private appendHttpParams(httpParams: HttpParams, param: string, val: string) {
     return httpParams.append(param, val);
   }

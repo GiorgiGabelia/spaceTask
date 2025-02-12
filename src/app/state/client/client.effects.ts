@@ -6,6 +6,7 @@ import { ClientActions } from './client.actions';
 import { ClientService } from '../../services/api/client.service';
 import { SessionStorageService } from '../../services/session-storage.service';
 import { SnackbarService } from '../../services/snackbar.service';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class ClientEffects {
@@ -13,6 +14,7 @@ export class ClientEffects {
   private readonly clientService = inject(ClientService);
   private readonly sessionStorageService = inject(SessionStorageService);
   private readonly snackBarService = inject(SnackbarService);
+  private readonly router = inject(Router);
 
   loadClients$ = createEffect(() =>
     this.actions$.pipe(
@@ -81,6 +83,28 @@ export class ClientEffects {
               'FAIL',
             );
             return of(ClientActions.updateClientError({ error: err.message }));
+          }),
+        ),
+      ),
+    ),
+  );
+
+  deleteClient$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ClientActions.deleteClient),
+      switchMap(({ id }) =>
+        this.clientService.deleteClient(id).pipe(
+          map(() => {
+            this.snackBarService.open('Successfully deleted client', 'SUCCESS');
+            this.router.navigate(['/clients']);
+            return ClientActions.deleteClientSuccess({ id });
+          }),
+          catchError((err: Error) => {
+            this.snackBarService.open(
+              'Error deleting client, please try again.',
+              'FAIL',
+            );
+            return of(ClientActions.deleteClientError({ error: err.message }));
           }),
         ),
       ),
