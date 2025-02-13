@@ -3,6 +3,7 @@ import { Account, AccountType } from '../../state/account/account.model';
 import { AccountService } from '../../services/api/account.service';
 import { map, of } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
+import { AccountCardComponent } from './account-card/account-card.component';
 
 export type AccountMap = {
   [type in AccountType]: Account[];
@@ -10,7 +11,7 @@ export type AccountMap = {
 
 @Component({
   selector: 'app-accounts',
-  imports: [AsyncPipe],
+  imports: [AsyncPipe, AccountCardComponent],
   templateUrl: './accounts.component.html',
 })
 export class AccountsComponent {

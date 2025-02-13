@@ -1,0 +1,38 @@
+@if (account()) {
+  <div
+    class="rounded-xl p-4 border-2 flex border-solid border-red items-center justify-between"
+    [ngClass]="{ 'opacity-50': account().status === 'CLOSED' }"
+  >
+    <div class="flex gap-4 items-center">
+      <img
+        [src]="'assets/' + (account().currency | lowercase) + '.svg'"
+        class="size-16"
+        alt="currency"
+      />
+
+      <section>
+        <div
+          class="flex gap-1 rounded p-2 mb-1 w-fit items-center"
+          [ngClass]="{
+            'bg-orange-200': account().status === 'ACTIVE',
+          }"
+        >
+          <mat-icon
+            >{{ "credit_card" + (account().status === "CLOSED" ? "_off" : "") }}
+          </mat-icon>
+          <p class="text-base">
+            {{ account().status | titlecase }}
+          </p>
+        </div>
+
+        <p>{{ account().accountNumber }}</p>
+      </section>
+    </div>
+
+    @if (account().status === "ACTIVE") {
+      <button mat-flat-button color="primary">
+        Close <span class="hidden md:inline"> this account</span>
+      </button>
+    }
+  </div>
+}

@@ -2,7 +2,8 @@
   <div class="2xl:px-[25%] px-0">
     <div class="flex justify-between items-center">
       <h2 class="text-4xl medium my-6">
-        Client {{ client.name }} {{ client.lastName }}
+        {{ client.name }}
+        {{ client.lastName }}
       </h2>
       <button mat-stroked-button (click)="openCancelDialog(client.id)">
         <mat-icon class="!mx-auto !my-0">delete</mat-icon>
@@ -17,7 +18,7 @@
       [selectedIndex]="1"
     >
       <mat-tab label="Accounts">
-        <div class="p-12 pt-0">
+        <div class="sm:p-12 p-2 !pt-0">
           <h2 class="text-3xl medium my-6">Manage accounts</h2>
           <app-accounts [clientNumber]="client.clientNumber"></app-accounts>
         </div>

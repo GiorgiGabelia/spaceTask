@@ -2,19 +2,24 @@
 @if (accounts$() | async; as accounts) {
   <p class="text-base font-bold mb-2">Current accounts</p>
   @if (accounts.CURRENT.length) {
-    has
+    @for (account of accounts.CURRENT; track account.id) {
+      <app-account-card
+        [account]="account"
+        class="block mb-4"
+      ></app-account-card>
+    }
   } @else {
     This user has no current account.
   }
 
-  <p class="text-base font-bold mb-2">Savings accounts</p>
+  <p class="text-base font-bold my-2">Savings accounts</p>
   @if (accounts.SAVING.length) {
     has
   } @else {
     This user has no saving account.
   }
 
-  <p class="text-base font-bold mb-2">Accumulating accounts</p>
+  <p class="text-base font-bold my-2">Accumulating accounts</p>
   @if (accounts.ACCUMULATIVE.length) {
     has
   } @else {
