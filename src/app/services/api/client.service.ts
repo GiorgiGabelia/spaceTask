@@ -5,14 +5,13 @@ import { Client } from '../../state/client/client.model';
 import { Sort } from '@angular/material/sort';
 import { ClientSlice } from './models';
 import { FilterFormValues } from '../../components/client-form/models';
+import { environment as env } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ClientService {
   private readonly http = inject(HttpClient);
-
-  private readonly ROOT_URL = 'http://localhost:3000';
 
   private readonly clientsPath = '/clients';
 
@@ -68,7 +67,7 @@ export class ClientService {
     }
 
     return this.http
-      .get(this.ROOT_URL + this.clientsPath, {
+      .get(env.apiBaseUrl + this.clientsPath, {
         params: httpParams,
         observe: 'response',
       })
@@ -86,24 +85,24 @@ export class ClientService {
 
   getClient(id: string) {
     return this.http
-      .get(this.ROOT_URL + this.clientsPath + `/${id}`)
+      .get(env.apiBaseUrl + this.clientsPath + `/${id}`)
       .pipe(map((client) => client as Client));
   }
 
   createClient(client: Omit<Client, 'id'>) {
     return this.http
-      .post(this.ROOT_URL + this.clientsPath, client)
+      .post(env.apiBaseUrl + this.clientsPath, client)
       .pipe(map((client) => client as Client));
   }
 
   updateClient(client: Client) {
     return this.http
-      .put(this.ROOT_URL + this.clientsPath + `/${client.id}`, client)
+      .put(env.apiBaseUrl + this.clientsPath + `/${client.id}`, client)
       .pipe(map((client) => client as Client));
   }
 
   deleteClient(id: string) {
-    return this.http.delete(this.ROOT_URL + this.clientsPath + `/${id}`);
+    return this.http.delete(env.apiBaseUrl + this.clientsPath + `/${id}`);
   }
 
   private appendHttpParams(httpParams: HttpParams, param: string, val: string) {
