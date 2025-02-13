@@ -70,4 +70,33 @@ export class AccountEffects {
       ),
     ),
   );
+
+  closeAccount$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AccountActions.closeAccount),
+      switchMap(({ id, clientNumber, accountType }) =>
+        this.accountService.closeAccount(id).pipe(
+          map(() => {
+            this.snackBarService.open('Account successfully closed', 'SUCCESS');
+            return AccountActions.closeAccountSuccess({
+              id,
+              clientNumber,
+              accountType,
+            });
+          }),
+          catchError((err: Error) => {
+            this.snackBarService.open(
+              "Couldn't close account. Please try again.",
+              'FAIL',
+            );
+            return of(
+              AccountActions.closeAccountError({
+                error: err.message,
+              }),
+            );
+          }),
+        ),
+      ),
+    ),
+  );
 }

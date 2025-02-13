@@ -38,4 +38,20 @@ export const reducer = createReducer(
       };
     },
   ),
+  on(
+    AccountActions.closeAccountSuccess,
+    (state, { id, clientNumber, accountType }) => {
+      const updatedAccounts = state[clientNumber][accountType].map((account) =>
+        account.id === id ? { ...account, status: 'CLOSED' } : account,
+      );
+
+      return {
+        ...state,
+        [clientNumber]: {
+          ...state[clientNumber],
+          [accountType]: updatedAccounts,
+        },
+      };
+    },
+  ),
 );

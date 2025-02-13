@@ -31,7 +31,7 @@
     </div>
 
     @if (account().status === "ACTIVE") {
-      <button mat-flat-button color="primary">
+      <button mat-flat-button color="primary" (click)="openCloseDialog()">
         Close <span class="hidden md:inline"> this account</span>
       </button>
     }

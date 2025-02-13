@@ -1,6 +1,6 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
-import { Account } from './account.model';
+import { Account, AccountType } from './account.model';
 import { AccountRequest } from '../../services/api/models';
 
 export const AccountActions = createActionGroup({
@@ -24,8 +24,16 @@ export const AccountActions = createActionGroup({
     'Add Accounts For Client Error': props<{
       error: string;
     }>(),
-    'Close Account': props<{ accountId: string }>(),
-    'Close Account Success': props<{ accountId: string }>(),
+    'Close Account': props<{
+      id: string;
+      clientNumber: number;
+      accountType: AccountType;
+    }>(),
+    'Close Account Success': props<{
+      id: string;
+      clientNumber: number;
+      accountType: AccountType;
+    }>(),
     'Close Account Error': props<{ error: string }>(),
   },
 });

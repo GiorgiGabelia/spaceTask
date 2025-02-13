@@ -1,9 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import {
-  Account,
-  AccountType,
-  Currency,
-} from '../../state/account/account.model';
+import { Account } from '../../state/account/account.model';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment as env } from '../../../environments/environment';
 import { forkJoin, map } from 'rxjs';
@@ -44,7 +40,13 @@ export class AccountService {
     );
   }
 
-  closeAccount(accountId: string) {}
+  closeAccount(accountId: string) {
+    return this.http
+      .patch(`${env.apiBaseUrl + this.accountsPath}/${accountId}`, {
+        status: 'CLOSED',
+      })
+      .pipe(map((res) => res as Account));
+  }
 
   // NOTE: since we have fake BE generating account number here
   private generateRandomAccountNumber() {

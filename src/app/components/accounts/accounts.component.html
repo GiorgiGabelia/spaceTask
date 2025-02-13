@@ -1,76 +1,84 @@
 <!-- TODO: refactor this dry -->
 @if (accounts$() | async; as accounts) {
-  <div class="flex gap-4">
-    <p class="text-base font-bold mb-2">Current accounts</p>
+  <section class="mb-4">
+    <div class="flex gap-4">
+      <p class="text-base font-bold">Current accounts</p>
+      @let canAddCurrent = accounts.CURRENT.length < 3;
+      @if (canAddCurrent) {
+        <button
+          matTooltip="Add account"
+          class="cursor-pointer flex items-center"
+          (click)="openAddDialog(accounts.CURRENT, 'CURRENT')"
+        >
+          <mat-icon>add_circle</mat-icon>
+        </button>
+      }
+    </div>
 
-    @let canAddCurrent = accounts.CURRENT.length < 3;
-    @if (canAddCurrent) {
-      <button
-        matTooltip="Add account"
-        class="cursor-pointer flex items-center"
-        (click)="openAddDialog(accounts.CURRENT, 'CURRENT')"
-      >
-        <mat-icon>add_circle</mat-icon>
-      </button>
+    @if (accounts.CURRENT.length) {
+      @for (account of accounts.CURRENT; track account.id) {
+        <app-account-card
+          [account]="account"
+          [clientNumber]="clientNumber()"
+          class="block mb-4"
+        ></app-account-card>
+      }
+    } @else {
+      <p>This user has no current accounts.</p>
     }
-  </div>
+  </section>
 
-  @if (accounts.CURRENT.length) {
-    @for (account of accounts.CURRENT; track account.id) {
-      <app-account-card
-        [account]="account"
-        class="block mb-4"
-      ></app-account-card>
+  <section class="mb-4">
+    <div class="flex gap-4">
+      <p class="text-base font-bold">Savings accounts</p>
+      @let canAddSaving = accounts.SAVING.length < 3;
+      @if (canAddSaving) {
+        <button
+          matTooltip="Add account"
+          class="cursor-pointer flex items-center"
+          (click)="openAddDialog(accounts.SAVING, 'SAVING')"
+        >
+          <mat-icon>add_circle</mat-icon>
+        </button>
+      }
+    </div>
+    @if (accounts.SAVING.length) {
+      @for (account of accounts.SAVING; track account.id) {
+        <app-account-card
+          [account]="account"
+          [clientNumber]="clientNumber()"
+          class="block mb-4"
+        ></app-account-card>
+      }
+    } @else {
+      <p>This user has no saving accounts.</p>
     }
-  } @else {
-    This user has no current account.
-  }
+  </section>
 
-  <div class="flex gap-4">
-    <p class="text-base font-bold my-2">Savings accounts</p>
-    @let canAddSaving = accounts.SAVING.length < 3;
-    @if (canAddSaving) {
-      <button
-        matTooltip="Add account"
-        class="cursor-pointer flex items-center"
-        (click)="openAddDialog(accounts.SAVING, 'SAVING')"
-      >
-        <mat-icon>add_circle</mat-icon>
-      </button>
+  <section>
+    <div class="flex gap-4">
+      <p class="text-base font-bold">Accumulating accounts</p>
+      @let canAddAcc = accounts.ACCUMULATIVE.length < 3;
+      @if (canAddAcc) {
+        <button
+          matTooltip="Add account"
+          class="cursor-pointer flex items-center"
+          (click)="openAddDialog(accounts.ACCUMULATIVE, 'ACCUMULATIVE')"
+        >
+          <mat-icon>add_circle</mat-icon>
+        </button>
+      }
+    </div>
+    @if (accounts.ACCUMULATIVE.length) {
+      @for (account of accounts.ACCUMULATIVE; track account.id) {
+        <app-account-card
+          [account]="account"
+          [clientNumber]="clientNumber()"
+          class="block mb-4"
+        ></app-account-card>
+      }
+    } @else {
+      <p>This user has no accumulating accounts.</p>
     }
-  </div>
-  @if (accounts.SAVING.length) {
-    @for (account of accounts.SAVING; track account.id) {
-      <app-account-card
-        [account]="account"
-        class="block mb-4"
-      ></app-account-card>
-    }
-  } @else {
-    This user has no saving account.
-  }
-
-  <div class="flex gap-4">
-    <p class="text-base font-bold my-2">Accumulating accounts</p>
-    @let canAddAcc = accounts.ACCUMULATIVE.length < 3;
-    @if (canAddAcc) {
-      <button
-        matTooltip="Add account"
-        class="cursor-pointer flex items-center"
-        (click)="openAddDialog(accounts.ACCUMULATIVE, 'ACCUMULATIVE')"
-      >
-        <mat-icon>add_circle</mat-icon>
-      </button>
-    }
-  </div>
-  @if (accounts.ACCUMULATIVE.length) {
-    @for (account of accounts.ACCUMULATIVE; track account.id) {
-      <app-account-card
-        [account]="account"
-        class="block mb-4"
-      ></app-account-card>
-    }
-  } @else {
-    This user has no accumulating account.
-  }
+  </section>
 }
