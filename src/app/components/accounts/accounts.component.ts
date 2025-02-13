@@ -4,7 +4,6 @@ import {
   AccountType,
   Currency,
 } from '../../state/account/account.model';
-import { AccountService } from '../../services/api/account.service';
 import { of, take, tap } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { AccountCardComponent } from './account-card/account-card.component';
@@ -19,6 +18,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Store } from '@ngrx/store';
 import { AccountActions } from '../../state/account/account.actions';
 import { selectClientAccounts } from '../../state/account/account.selectors';
+import { AccountRequest } from '../../services/api/models';
 
 export type AccountMap = {
   [type in AccountType]: Account[];
@@ -52,29 +52,48 @@ export class AccountsComponent {
   });
 
   openAddDialog(createdAccounts: Account[], type: AccountType) {
-    const availableCurrencies: Currency[] = ['EUR', 'GEL', 'USD'];
+    const availableCurrencies = (['EUR', 'GEL', 'USD'] as Currency[]).filter(
+      (currency) => {
+        const accountInThisCurrencyAlreadyCreated = createdAccounts.find(
+          (account) => account.currency === currency,
+        );
 
-    const currencies = availableCurrencies.filter((currency) => {
-      const accountInThisCurrencyAlreadyCreated = createdAccounts.find(
-        (account) => account.currency === currency,
-      );
-
-      return !accountInThisCurrencyAlreadyCreated;
-    });
+        return !accountInThisCurrencyAlreadyCreated;
+      },
+    );
 
     const data: CreateAccountDialogData = {
-      currencies,
+      currencies: availableCurrencies,
       type,
     };
 
     const dialogRef = this.matDialog.open(CreateAccountDialogComponent, {
       data,
     });
+
     dialogRef
       .afterClosed()
       .pipe(take(1), takeUntilDestroyed(this.destroyRef))
       .subscribe((res?: { [currency in Currency]?: boolean }) => {
-        console.log(res);
+        if (res) {
+          const newAccounts: AccountRequest['accounts'] = [];
+
+          availableCurrencies.forEach((currency) => {
+            if (res[currency]) {
+              newAccounts.push({
+                currency,
+                type,
+              });
+            }
+          });
+
+          this.store.dispatch(
+            AccountActions.addAccountsForClient({
+              clientNumber: this.clientNumber(),
+              accounts: newAccounts,
+            }),
+          );
+        }
       });
   }
 }

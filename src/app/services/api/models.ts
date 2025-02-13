@@ -1,5 +1,6 @@
 import { Sort } from '@angular/material/sort';
 import { Client } from '../../state/client/client.model';
+import { AccountType, Currency } from '../../state/account/account.model';
 
 export interface ClientSlice {
   clients: Client[];
@@ -8,4 +9,9 @@ export interface ClientSlice {
   totalItems: number;
   sort?: Sort;
   filters: string[];
+}
+
+export interface AccountRequest {
+  clientNumber: number;
+  accounts: { type: AccountType; currency: Currency }[];
 }

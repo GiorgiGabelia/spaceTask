@@ -1,6 +1,7 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
 import { Account } from './account.model';
+import { AccountRequest } from '../../services/api/models';
 
 export const AccountActions = createActionGroup({
   source: 'Account/API',
@@ -15,15 +16,12 @@ export const AccountActions = createActionGroup({
     'Load Accounts For Client Error': props<{
       error: string;
     }>(),
-    'Add Account For Client': props<{
+    'Add Accounts For Client': props<AccountRequest>(),
+    'Add Accounts For Client Success': props<{
       clientNumber: number;
-      account: Account;
+      accounts: Account[];
     }>(),
-    'Add Account For Client Success': props<{
-      clientNumber: number;
-      account: Account;
-    }>(),
-    'Add Account For Client Error': props<{
+    'Add Accounts For Client Error': props<{
       error: string;
     }>(),
     'Close Account': props<{ accountId: string }>(),

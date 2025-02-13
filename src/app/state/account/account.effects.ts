@@ -34,4 +34,40 @@ export class AccountEffects {
       ),
     ),
   );
+
+  addAccountsForClient$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AccountActions.addAccountsForClient),
+      switchMap((action) =>
+        this.accountService
+          .addAccounts({
+            clientNumber: action.clientNumber,
+            accounts: action.accounts,
+          })
+          .pipe(
+            map((accounts) => {
+              this.snackBarService.open(
+                'Account(s) successfully created',
+                'SUCCESS',
+              );
+              return AccountActions.addAccountsForClientSuccess({
+                accounts,
+                clientNumber: action.clientNumber,
+              });
+            }),
+            catchError((err: Error) => {
+              this.snackBarService.open(
+                "Couldn't create account(s). Please try again.",
+                'FAIL',
+              );
+              return of(
+                AccountActions.addAccountsForClientError({
+                  error: err.message,
+                }),
+              );
+            }),
+          ),
+      ),
+    ),
+  );
 }

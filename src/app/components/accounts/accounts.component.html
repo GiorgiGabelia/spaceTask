@@ -40,7 +40,12 @@
     }
   </div>
   @if (accounts.SAVING.length) {
-    has
+    @for (account of accounts.SAVING; track account.id) {
+      <app-account-card
+        [account]="account"
+        class="block mb-4"
+      ></app-account-card>
+    }
   } @else {
     This user has no saving account.
   }
@@ -59,7 +64,12 @@
     }
   </div>
   @if (accounts.ACCUMULATIVE.length) {
-    has
+    @for (account of accounts.ACCUMULATIVE; track account.id) {
+      <app-account-card
+        [account]="account"
+        class="block mb-4"
+      ></app-account-card>
+    }
   } @else {
     This user has no accumulating account.
   }

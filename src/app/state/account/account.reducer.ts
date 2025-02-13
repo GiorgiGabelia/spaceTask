@@ -24,4 +24,18 @@ export const reducer = createReducer(
       },
     }),
   ),
+  on(
+    AccountActions.addAccountsForClientSuccess,
+    (state, { accounts, clientNumber }) => {
+      const type = accounts[0].type;
+
+      return {
+        ...state,
+        [clientNumber]: {
+          ...state[clientNumber],
+          [type]: [...state[clientNumber][type], ...accounts],
+        },
+      };
+    },
+  ),
 );

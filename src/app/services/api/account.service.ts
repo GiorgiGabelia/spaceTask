@@ -1,8 +1,13 @@
 import { inject, Injectable } from '@angular/core';
-import { Account } from '../../state/account/account.model';
+import {
+  Account,
+  AccountType,
+  Currency,
+} from '../../state/account/account.model';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment as env } from '../../../environments/environment';
-import { map } from 'rxjs';
+import { forkJoin, map } from 'rxjs';
+import { AccountRequest } from './models';
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +29,25 @@ export class AccountService {
       .pipe(map((res) => res as Account[]));
   }
 
-  addAccount(clientNumber: string, account: Account) {}
+  addAccounts(request: AccountRequest) {
+    const accounts: Omit<Account, 'id'>[] = request.accounts.map((req) => ({
+      ...req,
+      clientNumber: request.clientNumber,
+      accountNumber: this.generateRandomAccountNumber(),
+      status: 'ACTIVE',
+    }));
+
+    return forkJoin(
+      accounts.map((account) =>
+        this.http.post<Account>(env.apiBaseUrl + this.accountsPath, account),
+      ),
+    );
+  }
 
   closeAccount(accountId: string) {}
+
+  // NOTE: since we have fake BE generating account number here
+  private generateRandomAccountNumber() {
+    return Math.floor(1000000000000 + Math.random() * 9000000000000);
+  }
 }
