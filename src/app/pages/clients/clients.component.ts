@@ -19,6 +19,7 @@ import { FilterFormValues } from '../../components/client-form/models';
 import { FilterClientsDialogComponent } from '../../components/filter-clients-dialog/filter-clients-dialog.component';
 import { CreateClientDialogComponent } from '../../components/create-client-dialog/create-client-dialog.component';
 import { Router } from '@angular/router';
+import { MiniFilterFormComponent } from '../../components/mini-filter-form/mini-filter-form.component';
 
 export interface PageAndSortState {
   currentIndex: number;
@@ -27,7 +28,13 @@ export interface PageAndSortState {
 
 @Component({
   selector: 'app-clients',
-  imports: [MatButton, AsyncPipe, GenericTableComponent, MatIcon],
+  imports: [
+    MatButton,
+    AsyncPipe,
+    GenericTableComponent,
+    MatIcon,
+    MiniFilterFormComponent,
+  ],
   templateUrl: './clients.component.html',
   styleUrl: './clients.component.scss',
 })
@@ -108,18 +115,20 @@ export class ClientsComponent {
       .pipe(take(1), takeUntilDestroyed(this.destroyRef))
       .subscribe((formValues?: FilterFormValues) => {
         if (formValues) {
-          this.changePage({ currentIndex: 1 });
-
-          this.store.dispatch(
-            ClientActions.loadClients({
-              pageSize: this.PAGE_SIZE,
-              page: this.pageAndSortState$.value.currentIndex,
-              sort: this.pageAndSortState$.value.currentSortState,
-              filters: formValues,
-            }),
-          );
+          this.loadClientsWithFilters(formValues);
         }
       });
+  }
+
+  addNameAndLastNameFilters(miniFilter: { name: string | null }) {
+    const existingFilters =
+      this.sessionStorageService.readFiltersStateFromSession() ||
+      this.sessionStorageService.generateBlankFiltersObject();
+
+    this.loadClientsWithFilters({
+      ...existingFilters,
+      name: miniFilter.name,
+    });
   }
 
   openCreateClientDialog() {
@@ -161,5 +170,18 @@ export class ClientsComponent {
       },
       sort: this.pageAndSortState$.value.currentSortState,
     };
+  }
+
+  private loadClientsWithFilters(filters: FilterFormValues) {
+    this.changePage({ currentIndex: 1 });
+
+    this.store.dispatch(
+      ClientActions.loadClients({
+        pageSize: this.PAGE_SIZE,
+        page: this.pageAndSortState$.value.currentIndex,
+        sort: this.pageAndSortState$.value.currentSortState,
+        filters,
+      }),
+    );
   }
 }

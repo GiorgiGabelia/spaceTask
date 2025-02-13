@@ -34,4 +34,25 @@ export class SessionStorageService {
       }
     });
   }
+
+  generateBlankFiltersObject(): FilterFormValues {
+    return {
+      addresses: {
+        factual: {
+          city: null,
+          country: null,
+        },
+        juridical: {
+          city: null,
+          country: null,
+        },
+      },
+      clientNumber: null,
+      lastName: null,
+      mobileNumber: null,
+      name: null,
+      personalNumber: null,
+      sex: null,
+    };
+  }
 }

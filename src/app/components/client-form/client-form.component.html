@@ -81,41 +81,43 @@
     </div>
 
     @for (control of controlsWithSameTemplate; track control.controlName) {
-      <div class="flex flex-col gap-2 mb-4">
-        <p class="text-sm font-bold">{{ control.label }}</p>
-        <mat-form-field appearance="outline" subscriptSizing="dynamic">
-          <mat-label>Type {{ control.label | lowercase }}</mat-label>
-          <input
-            matInput
-            [type]="control.inputType"
-            [formControlName]="control.controlName"
-          />
-          @if (form.value[control.controlName]) {
-            <button
-              matSuffix
-              mat-icon-button
-              type="button"
-              aria-label="Clear"
-              (click)="form.controls[control.controlName].reset()"
-            >
-              <mat-icon>close</mat-icon>
-            </button>
-          }
-        </mat-form-field>
+      @if (control.controlName !== "name" || !usedForFiltering()) {
+        <div class="flex flex-col gap-2 mb-4">
+          <p class="text-sm font-bold">{{ control.label }}</p>
+          <mat-form-field appearance="outline" subscriptSizing="dynamic">
+            <mat-label>Type {{ control.label | lowercase }}</mat-label>
+            <input
+              matInput
+              [type]="control.inputType"
+              [formControlName]="control.controlName"
+            />
+            @if (form.value[control.controlName]) {
+              <button
+                matSuffix
+                mat-icon-button
+                type="button"
+                aria-label="Clear"
+                (click)="form.controls[control.controlName].reset()"
+              >
+                <mat-icon>close</mat-icon>
+              </button>
+            }
+          </mat-form-field>
 
-        @if (form.controls[control.controlName].touched) {
-          @if (form.controls[control.controlName].errors; as errors) {
-            @for (error of errors | keyvalue; track error.key) {
-              <mat-error>
-                {{
-                  control.errorMessageMapping?.[error.key] ||
-                    (error.key | titlecase)
-                }}
-              </mat-error>
+          @if (form.controls[control.controlName].touched) {
+            @if (form.controls[control.controlName].errors; as errors) {
+              @for (error of errors | keyvalue; track error.key) {
+                <mat-error>
+                  {{
+                    control.errorMessageMapping?.[error.key] ||
+                      (error.key | titlecase)
+                  }}
+                </mat-error>
+              }
             }
           }
-        }
-      </div>
+        </div>
+      }
     }
 
     <div class="flex flex-col gap-2">
