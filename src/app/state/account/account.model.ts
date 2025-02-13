@@ -10,3 +10,9 @@ export interface Account {
   currency: Currency;
   status: Status;
 }
+
+export interface AccountClientNumberMap {
+  [clientNumber: string]: {
+    [accountType in AccountType]: Account[];
+  };
+}

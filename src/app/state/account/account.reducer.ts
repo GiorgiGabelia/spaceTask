@@ -1,37 +1,27 @@
-import { createFeature, createReducer, on } from '@ngrx/store';
-import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
-import { Account, AccountType, Currency } from './account.model';
+import { createReducer, on } from '@ngrx/store';
+import { AccountClientNumberMap } from './account.model';
 import { AccountActions } from './account.actions';
 
+// TODO: no errors written in store
+// TODO: no errors written in store
+// TODO: no errors written in store
 export const accountsFeatureKey = 'accounts';
 
-export interface State extends EntityState<Account> {
-  accountClientMap:
-    | null
-    | {
-        [clientNumber: number]: {
-          [accountType in AccountType]: {
-            [curr in Currency]?: number;
-          };
-        };
-      }[];
-}
+export const initialState: AccountClientNumberMap = {};
 
-export const adapter: EntityAdapter<Account> = createEntityAdapter<Account>();
-
-export const initialState: State = adapter.getInitialState({
-  accountClientMap: null,
-});
-
-export const reducer = createReducer(initialState);
-
-export const accountsFeature = createFeature({
-  name: accountsFeatureKey,
-  reducer,
-  extraSelectors: ({ selectAccountsState }) => ({
-    ...adapter.getSelectors(selectAccountsState),
-  }),
-});
-
-export const { selectIds, selectEntities, selectAll, selectTotal } =
-  accountsFeature;
+export const reducer = createReducer(
+  initialState,
+  on(
+    AccountActions.loadAccountsForClientSuccess,
+    (state, { accounts, clientNumber }) => ({
+      ...state,
+      [clientNumber]: {
+        ACCUMULATIVE: accounts.filter(
+          (account) => account.type === 'ACCUMULATIVE',
+        ),
+        CURRENT: accounts.filter((account) => account.type === 'CURRENT'),
+        SAVING: accounts.filter((account) => account.type === 'SAVING'),
+      },
+    }),
+  ),
+);

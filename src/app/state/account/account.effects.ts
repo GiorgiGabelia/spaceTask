@@ -1,23 +1,37 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, concatMap } from 'rxjs/operators';
-import { Observable, EMPTY, of } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
+import { of } from 'rxjs';
 import { AccountActions } from './account.actions';
+import { AccountService } from '../../services/api/account.service';
+import { SnackbarService } from '../../services/snackbar.service';
 
 @Injectable()
 export class AccountEffects {
-  // accountAccounts$ = createEffect(() => {
-  //   return this.actions$.pipe(
+  private readonly accountService = inject(AccountService);
+  private readonly actions$ = inject(Actions);
+  private readonly snackBarService = inject(SnackbarService);
 
-  //     ofType(AccountActions.accountAccounts),
-  //     concatMap(() =>
-  //       /** An EMPTY observable only emits completion. Replace with your own observable API request */
-  //       EMPTY.pipe(
-  //         map(data => AccountActions.accountAccountsSuccess({ data })),
-  //         catchError(error => of(AccountActions.accountAccountsFailure({ error }))))
-  //     )
-  //   );
-  // });
-
-  constructor(private actions$: Actions) {}
+  loadAccountsForClient$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AccountActions.loadAccountsForClient),
+      switchMap(({ clientNumber }) =>
+        this.accountService.getClientAccounts(clientNumber).pipe(
+          map((accounts) =>
+            AccountActions.loadAccountsForClientSuccess({
+              accounts,
+              clientNumber,
+            }),
+          ),
+          catchError((err: Error) =>
+            of(
+              AccountActions.loadAccountsForClientError({
+                error: err.message,
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
 }
