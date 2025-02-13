@@ -1,6 +1,6 @@
 @if (account()) {
   <div
-    class="rounded-xl p-4 border-2 flex border-solid border-red items-center justify-between"
+    class="rounded-xl p-4 border-2 flex border-solid border-red items-center justify-between max-w-2xl"
     [ngClass]="{ 'opacity-50': account().status === 'CLOSED' }"
   >
     <div class="flex gap-4 items-center">
@@ -15,6 +15,7 @@
           class="flex gap-1 rounded p-2 mb-1 w-fit items-center"
           [ngClass]="{
             'bg-orange-200': account().status === 'ACTIVE',
+            'bg-gray-200': account().status === 'CLOSED',
           }"
         >
           <mat-icon

@@ -1,0 +1,35 @@
+<section class="p-8">
+  <div class="flex justify-between items-center gap-4">
+    <h3 class="text-xl font-medium">
+      Add new {{ data.type | lowercase }} account
+    </h3>
+    <mat-icon class="cursor-pointer" mat-dialog-close>close</mat-icon>
+  </div>
+  <mat-divider class="!my-8"></mat-divider>
+
+  @if (form) {
+    <form [formGroup]="form">
+      @for (currency of data.currencies; track currency) {
+        <p>
+          <mat-checkbox [formControlName]="currency">
+            Add account in
+            <span class="font-bold">{{ currency }} </span>
+          </mat-checkbox>
+        </p>
+      }
+    </form>
+
+    <div class="flex gap-4 mt-4">
+      <button mat-raised-button mat-dialog-close class="grow">Back</button>
+      <button
+        mat-flat-button
+        cdkFocusInitial
+        [mat-dialog-close]="form.value"
+        color="primary "
+        class="grow"
+      >
+        Create
+      </button>
+    </div>
+  }
+</section>

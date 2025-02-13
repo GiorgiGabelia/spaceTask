@@ -1,6 +1,20 @@
 <!-- TODO: refactor this dry -->
 @if (accounts$() | async; as accounts) {
-  <p class="text-base font-bold mb-2">Current accounts</p>
+  <div class="flex gap-4">
+    <p class="text-base font-bold mb-2">Current accounts</p>
+
+    @let canAddCurrent = accounts.CURRENT.length < 3;
+    @if (canAddCurrent) {
+      <button
+        matTooltip="Add account"
+        class="cursor-pointer flex items-center"
+        (click)="openAddDialog(accounts.CURRENT, 'CURRENT')"
+      >
+        <mat-icon>add_circle</mat-icon>
+      </button>
+    }
+  </div>
+
   @if (accounts.CURRENT.length) {
     @for (account of accounts.CURRENT; track account.id) {
       <app-account-card
@@ -12,14 +26,38 @@
     This user has no current account.
   }
 
-  <p class="text-base font-bold my-2">Savings accounts</p>
+  <div class="flex gap-4">
+    <p class="text-base font-bold my-2">Savings accounts</p>
+    @let canAddSaving = accounts.SAVING.length < 3;
+    @if (canAddSaving) {
+      <button
+        matTooltip="Add account"
+        class="cursor-pointer flex items-center"
+        (click)="openAddDialog(accounts.SAVING, 'SAVING')"
+      >
+        <mat-icon>add_circle</mat-icon>
+      </button>
+    }
+  </div>
   @if (accounts.SAVING.length) {
     has
   } @else {
     This user has no saving account.
   }
 
-  <p class="text-base font-bold my-2">Accumulating accounts</p>
+  <div class="flex gap-4">
+    <p class="text-base font-bold my-2">Accumulating accounts</p>
+    @let canAddAcc = accounts.ACCUMULATIVE.length < 3;
+    @if (canAddAcc) {
+      <button
+        matTooltip="Add account"
+        class="cursor-pointer flex items-center"
+        (click)="openAddDialog(accounts.ACCUMULATIVE, 'ACCUMULATIVE')"
+      >
+        <mat-icon>add_circle</mat-icon>
+      </button>
+    }
+  </div>
   @if (accounts.ACCUMULATIVE.length) {
     has
   } @else {

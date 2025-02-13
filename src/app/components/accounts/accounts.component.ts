@@ -1,9 +1,21 @@
-import { Component, computed, inject, input } from '@angular/core';
-import { Account, AccountType } from '../../state/account/account.model';
+import { Component, computed, DestroyRef, inject, input } from '@angular/core';
+import {
+  Account,
+  AccountType,
+  Currency,
+} from '../../state/account/account.model';
 import { AccountService } from '../../services/api/account.service';
-import { map, of } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
+import { map, of, take } from 'rxjs';
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { AccountCardComponent } from './account-card/account-card.component';
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatDialog } from '@angular/material/dialog';
+import {
+  CreateAccountDialogComponent,
+  CreateAccountDialogData,
+} from './create-account-dialog/create-account-dialog.component';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 export type AccountMap = {
   [type in AccountType]: Account[];
@@ -11,13 +23,16 @@ export type AccountMap = {
 
 @Component({
   selector: 'app-accounts',
-  imports: [AsyncPipe, AccountCardComponent],
+  imports: [AsyncPipe, AccountCardComponent, MatIcon, MatTooltip],
   templateUrl: './accounts.component.html',
 })
 export class AccountsComponent {
   private readonly accountService = inject(AccountService);
+  private readonly matDialog = inject(MatDialog);
+  private readonly destroyRef = inject(DestroyRef);
 
   clientNumber = input.required<number>();
+
   // Todo move this to store
   readonly accounts$ = computed(() => {
     const id = this.clientNumber();
@@ -37,4 +52,31 @@ export class AccountsComponent {
         )
       : of(null);
   });
+
+  openAddDialog(createdAccounts: Account[], type: AccountType) {
+    const availableCurrencies: Currency[] = ['EUR', 'GEL', 'USD'];
+
+    const currencies = availableCurrencies.filter((currency) => {
+      const accountInThisCurrencyAlreadyCreated = createdAccounts.find(
+        (account) => account.currency === currency,
+      );
+
+      return !accountInThisCurrencyAlreadyCreated;
+    });
+
+    const data: CreateAccountDialogData = {
+      currencies,
+      type,
+    };
+
+    const dialogRef = this.matDialog.open(CreateAccountDialogComponent, {
+      data,
+    });
+    dialogRef
+      .afterClosed()
+      .pipe(take(1), takeUntilDestroyed(this.destroyRef))
+      .subscribe((res?: { [curency in Currency]?: boolean }) => {
+        console.log(res);
+      });
+  }
 }
