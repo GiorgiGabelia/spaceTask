@@ -17,6 +17,7 @@ import {
   GenericDialogData,
 } from '../../components/generic-dialog/generic-dialog.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { AccountsComponent } from '../../components/accounts/accounts.component';
 
 @Component({
   selector: 'app-client-dashboard',
@@ -26,6 +27,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     MatTabsModule,
     MatIcon,
     MatButtonModule,
+    AccountsComponent,
   ],
   templateUrl: './client-dashboard.component.html',
   styleUrl: './client-dashboard.component.scss',

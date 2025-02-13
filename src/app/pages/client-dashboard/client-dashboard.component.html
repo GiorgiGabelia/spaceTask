@@ -1,5 +1,5 @@
 @if (client$ | async; as client) {
-  <div class="2xl:px-[30%] px-0">
+  <div class="2xl:px-[25%] px-0">
     <div class="flex justify-between items-center">
       <h2 class="text-4xl medium my-6">
         Client {{ client.name }} {{ client.lastName }}
@@ -16,13 +16,20 @@
       mat-align-tabs="center"
       [selectedIndex]="1"
     >
-      <mat-tab label="Accounts"> Accounts goes here</mat-tab>
+      <mat-tab label="Accounts">
+        <div class="p-12 pt-0">
+          <h2 class="text-3xl medium my-6">Manage accounts</h2>
+          <app-accounts [clientNumber]="client.clientNumber"></app-accounts>
+        </div>
+      </mat-tab>
       <mat-tab label="Client">
-        <h2 class="text-3xl medium my-6">Edit client</h2>
-        <app-client-form
-          [defaultValues]="client"
-          (submitForm)="updateClient($event, client.id)"
-        ></app-client-form>
+        <div class="p-10 pt-0">
+          <h2 class="text-3xl medium my-6">Edit client</h2>
+          <app-client-form
+            [defaultValues]="client"
+            (submitForm)="updateClient($event, client.id)"
+          ></app-client-form>
+        </div>
       </mat-tab>
     </mat-tab-group>
   </div>
