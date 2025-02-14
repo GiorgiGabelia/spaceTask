@@ -1,7 +1,7 @@
 import { Component, DestroyRef, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { of, switchMap, take, tap } from 'rxjs';
+import { map, of, switchMap, take, tap } from 'rxjs';
 import { selectClientById } from '../../state/client/client.selectors';
 import { AsyncPipe } from '@angular/common';
 import { ClientFormComponent } from '../../components/client-form/client-form.component';
@@ -38,20 +38,7 @@ export class ClientDashboardComponent {
   private readonly matDialog = inject(MatDialog);
   private readonly destroyRef = inject(DestroyRef);
 
-  client$ = this.route.paramMap.pipe(
-    switchMap((params) => {
-      const id = params.get('id');
-      return id
-        ? this.store.select(selectClientById(id)).pipe(
-            tap((client) => {
-              if (!client) {
-                this.store.dispatch(ClientActions.loadClient({ id }));
-              }
-            }),
-          )
-        : of(null);
-    }),
-  );
+  client$ = this.route.data.pipe(map((data) => data['client']));
 
   updateClient(value: FilterFormValues, clientId: string) {
     const client: Client = {
