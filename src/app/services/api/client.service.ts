@@ -4,7 +4,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Client } from '../../state/client/client.model';
 import { Sort } from '@angular/material/sort';
 import { ClientSlice } from './models';
-import { FilterFormValues } from '../../components/client-form/models';
+import { ClientFormValues } from '../../components/client-form/models';
 import { environment as env } from '../../../environments/environment';
 
 @Injectable({
@@ -19,7 +19,7 @@ export class ClientService {
     page: number;
     pageSize: number;
     sort?: Sort;
-    filters?: FilterFormValues;
+    filters?: ClientFormValues;
   }): Observable<ClientSlice> {
     let httpParams = new HttpParams({
       fromObject: {
@@ -33,7 +33,7 @@ export class ClientService {
     if (params.filters) {
       const filterKeys = Object.keys(
         params.filters,
-      ) as (keyof FilterFormValues)[];
+      ) as (keyof ClientFormValues)[];
 
       filterKeys.forEach((key) => {
         if (params.filters![key]) {
@@ -85,7 +85,7 @@ export class ClientService {
 
   getClient(id: string) {
     return this.http
-      .get(env.apiBaseUrl + this.clientsPath + `/${id}`)
+      .get(`${env.apiBaseUrl}${this.clientsPath}/${id}`)
       .pipe(map((client) => client as Client));
   }
 
@@ -97,61 +97,44 @@ export class ClientService {
 
   updateClient(client: Client) {
     return this.http
-      .put(env.apiBaseUrl + this.clientsPath + `/${client.id}`, client)
+      .put(`${env.apiBaseUrl + this.clientsPath}/${client.id}`, client)
       .pipe(map((client) => client as Client));
   }
-
   deleteClient(id: string) {
-    return this.http.delete(env.apiBaseUrl + this.clientsPath + `/${id}`);
+    return this.http.delete(`${env.apiBaseUrl + this.clientsPath}/${id}`);
   }
 
   private appendHttpParams(httpParams: HttpParams, param: string, val: string) {
     return httpParams.append(param, val);
   }
 
-  //TODO: refactor this:
   private parseAndAppendAddressToGetRequest(
     httpParams: HttpParams,
-    addresses: FilterFormValues['addresses'],
+    addresses: ClientFormValues['addresses'],
   ) {
-    const { city: factCity, country: factCountry } = addresses.factual;
-    const { city: jurCity, country: jurCountry } = addresses.juridical;
+    const addressTypes = ['factual', 'juridical'] as const;
     const usedFilters: string[] = [];
 
-    if (factCity) {
-      httpParams = this.appendHttpParams(
-        httpParams,
-        'addresses.factual.city_like',
-        String(addresses.factual.city),
-      );
-      usedFilters.push('addresses.factual.city');
-    }
+    for (const type of addressTypes) {
+      const { city, country } = addresses[type];
 
-    if (factCountry) {
-      httpParams = this.appendHttpParams(
-        httpParams,
-        'addresses.factual.country_like',
-        String(addresses.factual.country),
-      );
-      usedFilters.push('addresses.factual.country');
-    }
+      if (city) {
+        httpParams = this.appendHttpParams(
+          httpParams,
+          `addresses.${type}.city_like`,
+          String(city),
+        );
+        usedFilters.push(`addresses.${type}.city`);
+      }
 
-    if (jurCity) {
-      httpParams = this.appendHttpParams(
-        httpParams,
-        'addresses.juridical.city_like',
-        String(addresses.juridical.city),
-      );
-      usedFilters.push('addresses.juridical.city');
-    }
-
-    if (jurCountry) {
-      httpParams = this.appendHttpParams(
-        httpParams,
-        'addresses.juridical.country_like',
-        String(addresses.juridical.country),
-      );
-      usedFilters.push('addresses.juridical.country');
+      if (country) {
+        httpParams = this.appendHttpParams(
+          httpParams,
+          `addresses.${type}.country_like`,
+          String(country),
+        );
+        usedFilters.push(`addresses.${type}.country`);
+      }
     }
 
     return { httpParams, usedFilters };

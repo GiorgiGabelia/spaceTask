@@ -1,13 +1,10 @@
 import { createReducer, on } from '@ngrx/store';
-import { AccountClientNumberMap } from './account.model';
+import { State } from './account.model';
 import { AccountActions } from './account.actions';
 
-// TODO: no errors written in store
-// TODO: no errors written in store
-// TODO: no errors written in store
 export const accountsFeatureKey = 'accounts';
 
-export const initialState: AccountClientNumberMap = {};
+export const initialState: State = { accounts: {} };
 
 export const reducer = createReducer(
   initialState,
@@ -15,12 +12,15 @@ export const reducer = createReducer(
     AccountActions.loadAccountsForClientSuccess,
     (state, { accounts, clientNumber }) => ({
       ...state,
-      [clientNumber]: {
-        ACCUMULATIVE: accounts.filter(
-          (account) => account.type === 'ACCUMULATIVE',
-        ),
-        CURRENT: accounts.filter((account) => account.type === 'CURRENT'),
-        SAVING: accounts.filter((account) => account.type === 'SAVING'),
+      accounts: {
+        ...state.accounts,
+        [clientNumber]: {
+          ACCUMULATIVE: accounts.filter(
+            (account) => account.type === 'ACCUMULATIVE',
+          ),
+          CURRENT: accounts.filter((account) => account.type === 'CURRENT'),
+          SAVING: accounts.filter((account) => account.type === 'SAVING'),
+        },
       },
     }),
   ),
@@ -31,9 +31,12 @@ export const reducer = createReducer(
 
       return {
         ...state,
-        [clientNumber]: {
-          ...state[clientNumber],
-          [type]: [...state[clientNumber][type], ...accounts],
+        accounts: {
+          ...state.accounts,
+          [clientNumber]: {
+            ...state.accounts[clientNumber],
+            [type]: [...state.accounts[clientNumber][type], ...accounts],
+          },
         },
       };
     },
@@ -41,17 +44,30 @@ export const reducer = createReducer(
   on(
     AccountActions.closeAccountSuccess,
     (state, { id, clientNumber, accountType }) => {
-      const updatedAccounts = state[clientNumber][accountType].map((account) =>
-        account.id === id ? { ...account, status: 'CLOSED' } : account,
+      const updatedAccounts = state.accounts[clientNumber][accountType].map(
+        (account) =>
+          account.id === id ? { ...account, status: 'CLOSED' } : account,
       );
 
       return {
         ...state,
-        [clientNumber]: {
-          ...state[clientNumber],
-          [accountType]: updatedAccounts,
+        accounts: {
+          ...state.accounts,
+          [clientNumber]: {
+            ...state.accounts[clientNumber],
+            [accountType]: updatedAccounts,
+          },
         },
       };
     },
+  ),
+  on(
+    AccountActions.loadAccountsForClientError,
+    AccountActions.addAccountsForClientError,
+    AccountActions.closeAccountError,
+    (state, { error }) => ({
+      ...state,
+      error,
+    }),
   ),
 );

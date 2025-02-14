@@ -11,8 +11,11 @@ export interface Account {
   status: Status;
 }
 
-export interface AccountClientNumberMap {
-  [clientNumber: string]: {
-    [accountType in AccountType]: Account[];
+export interface State {
+  accounts: {
+    [clientNumber: string]: {
+      [accountType in AccountType]: Account[];
+    };
   };
+  error?: string;
 }

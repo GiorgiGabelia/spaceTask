@@ -15,7 +15,7 @@ import { Sort } from '@angular/material/sort';
 import { SessionStorageService } from '../../services/session-storage.service';
 import { MatDialog } from '@angular/material/dialog';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FilterFormValues } from '../../components/client-form/models';
+import { ClientFormValues } from '../../components/client-form/models';
 import { FilterClientsDialogComponent } from '../../components/filter-clients-dialog/filter-clients-dialog.component';
 import { CreateClientDialogComponent } from '../../components/create-client-dialog/create-client-dialog.component';
 import { Router } from '@angular/router';
@@ -36,7 +36,6 @@ export interface PageAndSortState {
     MiniFilterFormComponent,
   ],
   templateUrl: './clients.component.html',
-  styleUrl: './clients.component.scss',
 })
 export class ClientsComponent {
   private readonly store = inject(Store);
@@ -45,7 +44,7 @@ export class ClientsComponent {
   private readonly destroyRef = inject(DestroyRef);
   private readonly router = inject(Router);
 
-  private readonly PAGE_SIZE = 5;
+  private readonly PAGE_SIZE = 10;
 
   private readonly DIALOG_CONFIG = {
     width: '40rem',
@@ -81,7 +80,7 @@ export class ClientsComponent {
             });
           }
         }),
-        map((clientSlice) => this.mapClientToTableRow(clientSlice)),
+        map((clientSlice) => this.mapClientsToTable(clientSlice)),
       ),
     ),
   );
@@ -113,7 +112,7 @@ export class ClientsComponent {
     dialogRef
       .afterClosed()
       .pipe(take(1), takeUntilDestroyed(this.destroyRef))
-      .subscribe((formValues?: FilterFormValues) => {
+      .subscribe((formValues?: ClientFormValues) => {
         if (formValues) {
           this.loadClientsWithFilters(formValues);
         }
@@ -147,7 +146,7 @@ export class ClientsComponent {
       });
   }
 
-  private mapClientToTableRow(clientSlice: {
+  private mapClientsToTable(clientSlice: {
     clients: Client[] | null;
     totalItems: number | undefined;
     pageSize: number | undefined;
@@ -160,9 +159,17 @@ export class ClientsComponent {
           lastName: client.lastName,
           sex: client.sex,
           personalNumber: client.personalNumber,
+          mobileNumber: client.mobileNumber,
           id: client.id,
         })) || [],
-      columns: ['clientNumber', 'name', 'lastName', 'sex', 'personalNumber'],
+      columns: [
+        'clientNumber',
+        'name',
+        'lastName',
+        'sex',
+        'personalNumber',
+        'mobileNumber',
+      ],
       paging: {
         pageIndex: this.pageAndSortState$.value.currentIndex - 1,
         totalItems: clientSlice.totalItems || 0,
@@ -172,7 +179,7 @@ export class ClientsComponent {
     };
   }
 
-  private loadClientsWithFilters(filters: FilterFormValues) {
+  private loadClientsWithFilters(filters: ClientFormValues) {
     this.changePage({ currentIndex: 1 });
 
     this.store.dispatch(

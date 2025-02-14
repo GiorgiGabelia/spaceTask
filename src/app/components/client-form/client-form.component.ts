@@ -3,6 +3,7 @@ import {
   KeyValuePipe,
   TitleCasePipe,
   NgClass,
+  NgTemplateOutlet,
 } from '@angular/common';
 import { Component, input, OnInit, output } from '@angular/core';
 import {
@@ -21,7 +22,7 @@ import {
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
-import { Client, Sex } from '../../state/client/client.model';
+import { Sex } from '../../state/client/client.model';
 import {
   exactLengthValidator,
   nameValidator,
@@ -30,7 +31,7 @@ import {
   controlsWithSameTemplate,
   VALIDATION_CONSTANTS,
 } from './controlsWithSameTemplate';
-import { FilterFormValues, FilterForm, AddressFormGroup } from './models';
+import { ClientFormValues, ClientForm, AddressFormGroup } from './models';
 
 @Component({
   selector: 'app-client-form',
@@ -49,24 +50,25 @@ import { FilterFormValues, FilterForm, AddressFormGroup } from './models';
     MatRadioGroup,
     TitleCasePipe,
     NgClass,
+    NgTemplateOutlet,
   ],
   templateUrl: './client-form.component.html',
   styleUrl: './client-form.component.scss',
 })
 export class ClientFormComponent implements OnInit {
-  defaultValues = input<FilterFormValues>();
+  defaultValues = input<ClientFormValues>();
   usedForFiltering = input(false);
 
-  form?: FormGroup<FilterForm>;
+  form?: FormGroup<ClientForm>;
 
-  readonly submitForm = output<FilterFormValues>();
+  readonly submitForm = output<ClientFormValues>();
   readonly controlsWithSameTemplate = controlsWithSameTemplate;
 
   ngOnInit() {
     this.initForm();
   }
 
-  resetControl(controlName: keyof FilterForm) {
+  resetControl(controlName: keyof ClientForm) {
     this.form?.controls[controlName].reset();
   }
 
@@ -77,7 +79,6 @@ export class ClientFormComponent implements OnInit {
   onSubmit() {
     if (this.form) {
       this.submitForm.emit(this.form.getRawValue());
-      this.form?.markAsUntouched();
     }
   }
 
@@ -91,36 +92,13 @@ export class ClientFormComponent implements OnInit {
         this.form?.patchValue({
           avatar: reader.result as string,
         });
-        this.form?.markAsTouched();
       };
       reader.readAsDataURL(file);
     }
   }
 
   private initForm() {
-    const validators = {
-      name: [
-        Validators.minLength(VALIDATION_CONSTANTS.NAME_MIN),
-        Validators.maxLength(VALIDATION_CONSTANTS.NAME_MAX),
-        nameValidator(),
-      ],
-      mobileNum: [
-        Validators.pattern(/^5.*/),
-        this.usedForFiltering()
-          ? Validators.maxLength(VALIDATION_CONSTANTS.MOB_NUM_LENGTH)
-          : exactLengthValidator(VALIDATION_CONSTANTS.MOB_NUM_LENGTH),
-      ],
-      personalNum: [
-        this.usedForFiltering()
-          ? Validators.maxLength(VALIDATION_CONSTANTS.PERS_NUM_LENGTH)
-          : exactLengthValidator(VALIDATION_CONSTANTS.PERS_NUM_LENGTH),
-      ],
-    };
-
-    if (!this.usedForFiltering()) {
-      const keys = Object.keys(validators) as (keyof typeof validators)[];
-      keys.forEach((key) => validators[key].push(Validators.required));
-    }
+    const validators = this.generateValidators();
 
     this.form = new FormGroup({
       clientNumber: new FormControl<number | null>(
@@ -147,7 +125,6 @@ export class ClientFormComponent implements OnInit {
         this.defaultValues()?.mobileNumber || null,
         validators.mobileNum,
       ),
-      // TODO: add address (street) to the form
       addresses: new FormGroup({
         factual: new FormGroup<AddressFormGroup>(
           this.generateAddressFormGroup('FACTUAL'),
@@ -158,6 +135,34 @@ export class ClientFormComponent implements OnInit {
       }),
       avatar: new FormControl(this.defaultValues()?.avatar || null),
     });
+  }
+
+  private generateValidators() {
+    const validators = {
+      name: [
+        Validators.minLength(VALIDATION_CONSTANTS.NAME_MIN),
+        Validators.maxLength(VALIDATION_CONSTANTS.NAME_MAX),
+        nameValidator(),
+      ],
+      mobileNum: [
+        Validators.pattern(/^5.*/),
+        this.usedForFiltering()
+          ? Validators.maxLength(VALIDATION_CONSTANTS.MOB_NUM_LENGTH)
+          : exactLengthValidator(VALIDATION_CONSTANTS.MOB_NUM_LENGTH),
+      ],
+      personalNum: [
+        this.usedForFiltering()
+          ? Validators.maxLength(VALIDATION_CONSTANTS.PERS_NUM_LENGTH)
+          : exactLengthValidator(VALIDATION_CONSTANTS.PERS_NUM_LENGTH),
+      ],
+    };
+
+    if (!this.usedForFiltering()) {
+      const keys = Object.keys(validators) as (keyof typeof validators)[];
+      keys.forEach((key) => validators[key].push(Validators.required));
+    }
+
+    return validators;
   }
 
   private generateAddressFormGroup(

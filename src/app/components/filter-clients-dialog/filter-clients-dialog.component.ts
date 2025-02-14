@@ -5,7 +5,7 @@ import { MatDialogClose, MatDialogRef } from '@angular/material/dialog';
 import { MatDivider } from '@angular/material/divider';
 import { MatIcon } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { FilterFormValues } from '../client-form/models';
+import { ClientFormValues } from '../client-form/models';
 import { ClientFormComponent } from '../client-form/client-form.component';
 import { SessionStorageService } from '../../services/session-storage.service';
 
@@ -29,7 +29,7 @@ export class FilterClientsDialogComponent {
     SessionStorageService,
   ).readFiltersStateFromSession();
 
-  onSubmit(values: FilterFormValues) {
+  onSubmit(values: ClientFormValues) {
     this.matDialog.close(values);
   }
 }

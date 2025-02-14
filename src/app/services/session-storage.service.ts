@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { PageAndSortState } from '../pages/clients/clients.component';
 import { Sort } from '@angular/material/sort';
-import { FilterFormValues } from '../components/client-form/models';
+import { ClientFormValues } from '../components/client-form/models';
 import { isEqual } from 'lodash';
 
 @Injectable({
@@ -17,7 +17,7 @@ export class SessionStorageService {
     };
   }
 
-  readFiltersStateFromSession(): FilterFormValues | undefined {
+  readFiltersStateFromSession(): ClientFormValues | undefined {
     const filters = sessionStorage.getItem('filters');
     return filters ? JSON.parse(filters) : undefined;
   }
@@ -25,7 +25,7 @@ export class SessionStorageService {
   saveStateToSessionStorage(state: {
     page: number;
     sort?: Sort;
-    filters?: FilterFormValues;
+    filters?: ClientFormValues;
   }) {
     const keys = Object.keys(state) as (keyof typeof state)[];
 
@@ -36,12 +36,12 @@ export class SessionStorageService {
     });
   }
 
-  wereFiltersUpdated(newFilters: FilterFormValues) {
+  wereFiltersUpdated(newFilters: ClientFormValues) {
     const oldFilters = this.readFiltersStateFromSession();
     return !oldFilters ? true : isEqual(newFilters, oldFilters);
   }
 
-  generateBlankFiltersObject(): FilterFormValues {
+  generateBlankFiltersObject(): ClientFormValues {
     return {
       addresses: {
         factual: {

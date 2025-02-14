@@ -4,12 +4,8 @@ import { Client } from './client.model';
 import { ClientActions } from './client.actions';
 import { Sort } from '@angular/material/sort';
 
-// TODO: no errors written in store
-// TODO: no errors written in store
-// TODO: no errors written in store
 export const clientsFeatureKey = 'clients';
 export interface State extends EntityState<Client> {
-  loading: boolean;
   paging?: {
     totalClients: number;
     pageSize: number;
@@ -20,11 +16,7 @@ export interface State extends EntityState<Client> {
 
 export const adapter: EntityAdapter<Client> = createEntityAdapter<Client>();
 
-export const initialState: State = adapter.getInitialState({
-  // TODO: use loading in reducers
-  loading: false,
-  filters: [],
-});
+export const initialState: State = adapter.getInitialState({});
 
 export const reducer = createReducer(
   initialState,
@@ -69,5 +61,16 @@ export const reducer = createReducer(
   ),
   on(ClientActions.deleteClientSuccess, (state, action) =>
     adapter.removeOne(action.id, state),
+  ),
+  on(
+    ClientActions.loadClientError,
+    ClientActions.loadClientsError,
+    ClientActions.addClientError,
+    ClientActions.updateClientError,
+    ClientActions.deleteClientError,
+    (state, { error }) => ({
+      ...state,
+      error,
+    }),
   ),
 );

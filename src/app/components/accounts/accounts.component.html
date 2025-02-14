@@ -1,84 +1,73 @@
-<!-- TODO: refactor this dry -->
 @if (accounts$() | async; as accounts) {
-  <section class="mb-4">
-    <div class="flex gap-4 mb-2">
-      <p class="text-base font-bold">Current accounts</p>
-      @let canAddCurrent = accounts.CURRENT.length < 3;
-      @if (canAddCurrent) {
-        <button
-          matTooltip="Add account"
-          class="cursor-pointer flex items-center"
-          (click)="openAddDialog(accounts.CURRENT, 'CURRENT')"
-        >
-          <mat-icon>add_circle</mat-icon>
-        </button>
+  <ng-container
+    *ngTemplateOutlet="
+      accountSection;
+      context: {
+        accounts: accounts.CURRENT,
+        type: 'CURRENT',
+        title: 'Current accounts',
+        noAccountsMessage: 'This user has no current accounts.',
       }
-    </div>
+    "
+  ></ng-container>
 
-    @if (accounts.CURRENT.length) {
-      @for (account of accounts.CURRENT; track account.id) {
-        <app-account-card
-          [account]="account"
-          [clientNumber]="clientNumber()"
-          class="block mb-4"
-        ></app-account-card>
+  <ng-container
+    *ngTemplateOutlet="
+      accountSection;
+      context: {
+        accounts: accounts.SAVING,
+        type: 'SAVING',
+        title: 'Savings accounts',
+        noAccountsMessage: 'This user has no saving accounts.',
       }
-    } @else {
-      <p>This user has no current accounts.</p>
-    }
-  </section>
+    "
+  ></ng-container>
 
-  <section class="mb-4">
-    <div class="flex gap-4 mb-2">
-      <p class="text-base font-bold">Savings accounts</p>
-      @let canAddSaving = accounts.SAVING.length < 3;
-      @if (canAddSaving) {
-        <button
-          matTooltip="Add account"
-          class="cursor-pointer flex items-center"
-          (click)="openAddDialog(accounts.SAVING, 'SAVING')"
-        >
-          <mat-icon>add_circle</mat-icon>
-        </button>
+  <ng-container
+    *ngTemplateOutlet="
+      accountSection;
+      context: {
+        accounts: accounts.ACCUMULATIVE,
+        type: 'ACCUMULATIVE',
+        title: 'Accumulating accounts',
+        noAccountsMessage: 'This user has no accumulating accounts.',
       }
-    </div>
-    @if (accounts.SAVING.length) {
-      @for (account of accounts.SAVING; track account.id) {
-        <app-account-card
-          [account]="account"
-          [clientNumber]="clientNumber()"
-          class="block mb-4"
-        ></app-account-card>
-      }
-    } @else {
-      <p>This user has no saving accounts.</p>
-    }
-  </section>
-
-  <section>
-    <div class="flex gap-4 mb-2">
-      <p class="text-base font-bold">Accumulating accounts</p>
-      @let canAddAcc = accounts.ACCUMULATIVE.length < 3;
-      @if (canAddAcc) {
-        <button
-          matTooltip="Add account"
-          class="cursor-pointer flex items-center"
-          (click)="openAddDialog(accounts.ACCUMULATIVE, 'ACCUMULATIVE')"
-        >
-          <mat-icon>add_circle</mat-icon>
-        </button>
-      }
-    </div>
-    @if (accounts.ACCUMULATIVE.length) {
-      @for (account of accounts.ACCUMULATIVE; track account.id) {
-        <app-account-card
-          [account]="account"
-          [clientNumber]="clientNumber()"
-          class="block mb-4"
-        ></app-account-card>
-      }
-    } @else {
-      <p>This user has no accumulating accounts.</p>
-    }
-  </section>
+    "
+  ></ng-container>
 }
+
+<ng-template
+  #accountSection
+  let-accounts="accounts"
+  let-type="type"
+  let-title="title"
+  let-noAccountsMessage="noAccountsMessage"
+>
+  <section class="mb-4">
+    <div class="flex gap-4 mb-2">
+      <p class="text-base font-bold">{{ title }}</p>
+      @let canAdd = accounts.length < 3;
+      @if (canAdd) {
+        <button
+          matTooltip="Add account"
+          class="cursor-pointer flex items-center"
+          (click)="openAddDialog(accounts, type)"
+        >
+          <mat-icon>add_circle</mat-icon>
+        </button>
+      }
+    </div>
+
+    @if (accounts.length) {
+      @for (account of accounts; track account.id) {
+        <app-account-card
+          [account]="account"
+          [clientNumber]="clientNumber()"
+          class="block mb-4"
+        ></app-account-card>
+      }
+    } @else {
+      <p>{{ noAccountsMessage }}</p>
+    }
+  </section>
+</ng-template>

@@ -1,14 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { adapter, clientsFeatureKey, State } from './client.reducer';
+import { clientsFeatureKey, State } from './client.reducer';
 
-export const selectClientState =
-  createFeatureSelector<State>(clientsFeatureKey);
-
-const { selectAll, selectEntities } = adapter.getSelectors();
-
-export const selectClients = createSelector(selectClientState, (state) =>
-  selectAll(state),
-);
+const selectClientState = createFeatureSelector<State>(clientsFeatureKey);
 
 export const selectClientSlice = (pageIndex: number) =>
   createSelector(selectClientState, (state) => {

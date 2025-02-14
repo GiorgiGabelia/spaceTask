@@ -1,7 +1,6 @@
 @if (form) {
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     @if (!usedForFiltering()) {
-      <!-- TODO: move image control to separate component? -->
       <p class="text-sm font-bold mb-2">Profile picture</p>
 
       <div class="flex mb-2 flex-col items-center">
@@ -32,52 +31,52 @@
     }
 
     <div class="flex flex-col gap-2 mb-2" formGroupName="addresses">
-      <div>
-        <!-- TODO: refactor these 4 controls, avoid duplication -->
-        <p class="text-sm font-bold mb-2">Factual address</p>
-        <div formGroupName="factual" class="flex gap-2">
-          <mat-form-field
-            class="grow"
-            appearance="outline"
-            subscriptSizing="dynamic"
-          >
-            <mat-label>Type Country</mat-label>
-            <input matInput type="text" formControlName="country" />
-          </mat-form-field>
+      <ng-container
+        *ngTemplateOutlet="
+          addressFields;
+          context: { addressGroup: 'factual', label: 'Factual Address' }
+        "
+      ></ng-container>
 
-          <mat-form-field
-            class="grow"
-            appearance="outline"
-            subscriptSizing="dynamic"
-          >
-            <mat-label>Type City</mat-label>
-            <input matInput type="text" formControlName="city" />
-          </mat-form-field>
+      <ng-container
+        *ngTemplateOutlet="
+          addressFields;
+          context: { addressGroup: 'juridical', label: 'Juridical Address' }
+        "
+      ></ng-container>
+
+      <ng-template
+        #addressFields
+        let-addressGroup="addressGroup"
+        let-label="label"
+      >
+        <div>
+          <p class="text-sm font-bold mb-2">{{ label }}</p>
+          <div [formGroupName]="addressGroup" class="flex gap-2">
+            <mat-form-field
+              class="grow"
+              appearance="outline"
+              subscriptSizing="dynamic"
+            >
+              <mat-label>Type Country</mat-label>
+              <input matInput type="text" formControlName="country" />
+            </mat-form-field>
+
+            <mat-form-field
+              class="grow"
+              appearance="outline"
+              subscriptSizing="dynamic"
+            >
+              <mat-label>Type City</mat-label>
+              <input matInput type="text" formControlName="city" />
+            </mat-form-field>
+          </div>
         </div>
-      </div>
+      </ng-template>
 
-      <div>
-        <p class="text-sm font-bold mb-2">Juridical address</p>
-        <div formGroupName="juridical" class="flex gap-2">
-          <mat-form-field
-            class="grow"
-            appearance="outline"
-            subscriptSizing="dynamic"
-          >
-            <mat-label>Type Country</mat-label>
-            <input matInput type="text" formControlName="country" />
-          </mat-form-field>
-
-          <mat-form-field
-            class="grow"
-            appearance="outline"
-            subscriptSizing="dynamic"
-          >
-            <mat-label>Type City</mat-label>
-            <input matInput type="text" formControlName="city" />
-          </mat-form-field>
-        </div>
-      </div>
+      @if (form.get("addresses")?.invalid && form.get("addresses")?.touched) {
+        <mat-error>All address fields are required.</mat-error>
+      }
     </div>
 
     @for (control of controlsWithSameTemplate; track control.controlName) {
@@ -145,7 +144,7 @@
       <button
         mat-flat-button
         class="h-10 w-full !bg-primary-500 px-6 py-2 !text-primary-A100"
-        [disabled]="!form.valid || !form.touched"
+        [disabled]="!form.valid"
         type="submit"
       >
         Apply

@@ -3,7 +3,7 @@ import { MatDialogClose, MatDialogRef } from '@angular/material/dialog';
 import { MatDivider } from '@angular/material/divider';
 import { MatIcon } from '@angular/material/icon';
 import { ClientFormComponent } from '../client-form/client-form.component';
-import { FilterFormValues } from '../client-form/models';
+import { ClientFormValues } from '../client-form/models';
 
 @Component({
   selector: 'app-create-client-dialog',
@@ -13,7 +13,7 @@ import { FilterFormValues } from '../client-form/models';
 export class CreateClientDialogComponent {
   private readonly matDialogRef = inject(MatDialogRef);
 
-  onSubmit(formValues: FilterFormValues) {
+  onSubmit(formValues: ClientFormValues) {
     this.matDialogRef.close(formValues);
   }
 }

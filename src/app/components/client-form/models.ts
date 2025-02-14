@@ -1,7 +1,7 @@
 import { FormControl, FormGroup } from '@angular/forms';
 import { Client, Sex } from '../../state/client/client.model';
-
-export interface FilterForm {
+// TODO: rename this interface to ClientForm
+export interface ClientForm {
   clientNumber: FormControl<number | null>;
   name: FormControl<string | null>;
   lastName: FormControl<string | null>;
@@ -20,7 +20,7 @@ export interface AddressFormGroup {
   country: FormControl<string | null>;
 }
 
-export interface FilterFormValues {
+export interface ClientFormValues {
   clientNumber: number | null;
   name: string | null;
   lastName: string | null;

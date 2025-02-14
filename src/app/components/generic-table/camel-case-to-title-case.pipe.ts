@@ -8,8 +8,8 @@ export class CamelCaseToTitleCasePipe implements PipeTransform {
     if (!camelCaseVal) return '';
 
     return camelCaseVal
-      .replace(/([A-Z])/g, ' $1') // Insert space before capital letters
-      .replace(/^./, (str) => str.toUpperCase()) // Capitalize first letter
+      .replace(/([A-Z])/g, ' $1')
+      .replace(/^./, (str) => str.toUpperCase())
       .trim();
   }
 }

@@ -5,7 +5,7 @@ import {
   Currency,
 } from '../../state/account/account.model';
 import { of, take, tap } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { AccountCardComponent } from './account-card/account-card.component';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -26,7 +26,13 @@ export type AccountMap = {
 
 @Component({
   selector: 'app-accounts',
-  imports: [AsyncPipe, AccountCardComponent, MatIcon, MatTooltip],
+  imports: [
+    AsyncPipe,
+    AccountCardComponent,
+    MatIcon,
+    MatTooltip,
+    NgTemplateOutlet,
+  ],
   templateUrl: './accounts.component.html',
 })
 export class AccountsComponent {

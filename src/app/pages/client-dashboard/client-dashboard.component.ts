@@ -1,15 +1,14 @@
 import { Component, DestroyRef, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { map, of, switchMap, take, tap } from 'rxjs';
-import { selectClientById } from '../../state/client/client.selectors';
+import { map, take } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { ClientFormComponent } from '../../components/client-form/client-form.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatIcon } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Client } from '../../state/client/client.model';
-import { FilterFormValues } from '../../components/client-form/models';
+import { ClientFormValues } from '../../components/client-form/models';
 import { ClientActions } from '../../state/client/client.actions';
 import { MatDialog } from '@angular/material/dialog';
 import {
@@ -30,7 +29,6 @@ import { AccountsComponent } from '../../components/accounts/accounts.component'
     AccountsComponent,
   ],
   templateUrl: './client-dashboard.component.html',
-  styleUrl: './client-dashboard.component.scss',
 })
 export class ClientDashboardComponent {
   private readonly route = inject(ActivatedRoute);
@@ -38,9 +36,9 @@ export class ClientDashboardComponent {
   private readonly matDialog = inject(MatDialog);
   private readonly destroyRef = inject(DestroyRef);
 
-  client$ = this.route.data.pipe(map((data) => data['client']));
+  readonly client$ = this.route.data.pipe(map((data) => data['client']));
 
-  updateClient(value: FilterFormValues, clientId: string) {
+  updateClient(value: ClientFormValues, clientId: string) {
     const client: Client = {
       id: clientId,
       ...value,

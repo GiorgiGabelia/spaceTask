@@ -1,4 +1,4 @@
-import { FilterForm } from '../client-form/models';
+import { ClientForm } from '../client-form/models';
 
 export const VALIDATION_CONSTANTS = {
   NAME_MIN: 2,
@@ -8,7 +8,7 @@ export const VALIDATION_CONSTANTS = {
 };
 
 export const controlsWithSameTemplate: {
-  controlName: keyof FilterForm;
+  controlName: keyof ClientForm;
   inputType: 'number' | 'string';
   label: string;
   errorMessageMapping?: {
