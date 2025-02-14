@@ -83,6 +83,7 @@ export class ClientEffects {
         this.clientService.createClient(client).pipe(
           map((client) => {
             this.snackBarService.open('Successfully created client', 'SUCCESS');
+            this.router.navigate([`client/${client.id}`]);
             return ClientActions.addClientSuccess({ client });
           }),
           catchError((err: Error) => {

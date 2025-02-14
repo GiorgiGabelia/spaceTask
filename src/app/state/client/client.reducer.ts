@@ -61,9 +61,9 @@ export const reducer = createReducer(
   on(ClientActions.loadClientSuccess, (state, action) =>
     adapter.addOne(action.client, state),
   ),
-  // on(ClientActions.addClientSuccess, (state, action) =>
-  //   adapter.addOne(action.client, state),
-  // ),
+  on(ClientActions.addClientSuccess, (state, action) =>
+    adapter.addOne(action.client, state),
+  ),
   on(ClientActions.updateClientSuccess, (state, { client }) =>
     adapter.updateOne({ id: client.id, changes: client }, state),
   ),
