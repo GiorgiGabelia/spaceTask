@@ -8,7 +8,6 @@
     [matSortActive]="tableData().sort?.active || ''"
     (matSortChange)="announceSortChange($event)"
     [dataSource]="tableData().rows"
-    class="flex h-full !min-w-max flex-col flex-nowrap"
   >
     @for (column of tableData().columns; track column) {
       <ng-container matColumnDef="{{ column }}">
@@ -36,6 +35,16 @@
         '!bg-rose-100': i % 2 === 0,
       }"
     ></mat-row>
+
+    <tr class="mat-row" *matNoDataRow>
+      <td
+        [colSpan]="tableData().columns.length - 1"
+        class="flex flex-col items-center"
+      >
+        <img src="assets/no-data.svg" alt="no-data" class="w-3xs" />
+        <p class="text-xl">No results.</p>
+      </td>
+    </tr>
   </table>
 
   <mat-paginator
