@@ -14,7 +14,7 @@ export const ClientActions = createActionGroup({
       sort?: Sort;
       filters?: FilterFormValues;
     }>(),
-    'Load Clients Success': props<ClientSlice>(),
+    'Load Clients Success': props<{ filterUpdated: boolean } & ClientSlice>(),
     'Load Clients Error': props<{ error: string }>(),
     'Load Client': props<{ id: string }>(),
     'Load Client Success': props<{ client: Client }>(),

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { PageAndSortState } from '../pages/clients/clients.component';
 import { Sort } from '@angular/material/sort';
 import { FilterFormValues } from '../components/client-form/models';
+import { isEqual } from 'lodash';
 
 @Injectable({
   providedIn: 'root',
@@ -33,6 +34,11 @@ export class SessionStorageService {
         sessionStorage.setItem(key, JSON.stringify(state[key]));
       }
     });
+  }
+
+  wereFiltersUpdated(newFilters: FilterFormValues) {
+    const oldFilters = this.readFiltersStateFromSession();
+    return !oldFilters ? true : isEqual(newFilters, oldFilters);
   }
 
   generateBlankFiltersObject(): FilterFormValues {

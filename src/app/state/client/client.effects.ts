@@ -37,7 +37,12 @@ export class ClientEffects {
                 filters,
               });
 
-              return ClientActions.loadClientsSuccess(response);
+              return ClientActions.loadClientsSuccess({
+                ...response,
+                filterUpdated: filters
+                  ? this.sessionStorageService.wereFiltersUpdated(filters)
+                  : false,
+              });
             }),
             catchError((err: Error) => {
               this.snackBarService.open(
