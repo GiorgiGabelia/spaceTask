@@ -161,8 +161,10 @@ export class ClientsComponent {
           personalNumber: client.personalNumber,
           mobileNumber: client.mobileNumber,
           id: client.id,
+          avatar: client.avatar || 'assets/no-pfp.svg',
         })) || [],
       columns: [
+        'avatar',
         'clientNumber',
         'name',
         'lastName',

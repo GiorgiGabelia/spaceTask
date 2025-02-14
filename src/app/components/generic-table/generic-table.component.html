@@ -15,13 +15,18 @@
           class="flex justify-center !px-0 !border-none"
           *matHeaderCellDef
           mat-sort-header
+          [disabled]="column === 'avatar'"
           >{{ column | camelCaseToTitleCase }}</mat-header-cell
         >
         <mat-cell
           class="flex justify-center !px-0 !border-none"
           *matCellDef="let row"
         >
-          {{ row[column] }}
+          @if (column !== "avatar") {
+            {{ row[column] }}
+          } @else {
+            <img [src]="row[column]" class="w-8 rounded-xl" />
+          }
         </mat-cell>
       </ng-container>
     }
