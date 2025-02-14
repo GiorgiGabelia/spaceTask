@@ -1,26 +1,271 @@
 {
-  "clients": [
+  "accounts": [
     {
-      "id": "21",
-      "clientNumber": 1021,
-      "name": "Nino",
-      "lastName": "Sikharulidze",
-      "sex": "Female",
-      "personalNumber": "21345678901",
-      "mobileNumber": 595678912,
-      "addresses": {
-        "juridical": {
-          "city": "Tbilisi",
-          "country": "Georgia",
-          "address": "Some street 90"
-        },
-        "factual": {
-          "city": "Tbilisi",
-          "country": "Georgia",
-          "address": "Some street 90"
-        }
-      }
+      "id": "1",
+      "accountNumber": "218128120123",
+      "clientNumber": "1234567",
+      "type": "CURRENT",
+      "currency": "GEL",
+      "status": "ACTIVE"
     },
+    {
+      "id": "2",
+      "accountNumber": "218128120432",
+      "clientNumber": "1234567",
+      "type": "CURRENT",
+      "currency": "USD",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "3",
+      "accountNumber": "218123120432",
+      "clientNumber": "1234567",
+      "type": "CURRENT",
+      "currency": "EUR",
+      "status": "CLOSED"
+    },
+    {
+      "currency": "EUR",
+      "type": "CURRENT",
+      "clientNumber": 1022,
+      "accountNumber": 2521601190453,
+      "status": "ACTIVE",
+      "id": "TqGLp4P"
+    },
+    {
+      "currency": "GEL",
+      "type": "CURRENT",
+      "clientNumber": 1022,
+      "accountNumber": 8064060997272,
+      "status": "CLOSED",
+      "id": "fYOxWAh"
+    },
+    {
+      "currency": "USD",
+      "type": "CURRENT",
+      "clientNumber": 1022,
+      "accountNumber": 1270005949613,
+      "status": "CLOSED",
+      "id": "GFwhaEy"
+    },
+    {
+      "currency": "EUR",
+      "type": "SAVING",
+      "clientNumber": 1022,
+      "accountNumber": 6476949186554,
+      "status": "ACTIVE",
+      "id": "0vkyyp8"
+    },
+    {
+      "currency": "USD",
+      "type": "SAVING",
+      "clientNumber": 1022,
+      "accountNumber": 4467453004112,
+      "status": "ACTIVE",
+      "id": "uX5l9Hg"
+    },
+    {
+      "currency": "GEL",
+      "type": "SAVING",
+      "clientNumber": 1022,
+      "accountNumber": 2654339249574,
+      "status": "ACTIVE",
+      "id": "dv-RWG2"
+    },
+    {
+      "currency": "EUR",
+      "type": "ACCUMULATIVE",
+      "clientNumber": 1022,
+      "accountNumber": 2957572885302,
+      "status": "ACTIVE",
+      "id": "luoZ7d3"
+    },
+    {
+      "currency": "EUR",
+      "type": "CURRENT",
+      "clientNumber": 1020,
+      "accountNumber": 8282919864240,
+      "status": "CLOSED",
+      "id": "761-s7U"
+    },
+    {
+      "currency": "GEL",
+      "type": "CURRENT",
+      "clientNumber": 1020,
+      "accountNumber": 5047736174321,
+      "status": "CLOSED",
+      "id": "RnntAa1"
+    },
+    {
+      "currency": "USD",
+      "type": "CURRENT",
+      "clientNumber": 1020,
+      "accountNumber": 3473848115933,
+      "status": "ACTIVE",
+      "id": "oqCDBcv"
+    },
+    {
+      "currency": "EUR",
+      "type": "CURRENT",
+      "clientNumber": 1016,
+      "accountNumber": 8860357389449,
+      "status": "ACTIVE",
+      "id": "FMr1MQ5"
+    },
+    {
+      "currency": "USD",
+      "type": "CURRENT",
+      "clientNumber": 1016,
+      "accountNumber": 7195344184908,
+      "status": "CLOSED",
+      "id": "zPeaoDe"
+    },
+    {
+      "currency": "USD",
+      "type": "SAVING",
+      "clientNumber": 1016,
+      "accountNumber": 2165107936966,
+      "status": "ACTIVE",
+      "id": "K-zF7uK"
+    },
+    {
+      "currency": "EUR",
+      "type": "CURRENT",
+      "clientNumber": 1021,
+      "accountNumber": 4297958159558,
+      "status": "CLOSED",
+      "id": "FAGG0ce"
+    },
+    {
+      "currency": "GEL",
+      "type": "SAVING",
+      "clientNumber": 1021,
+      "accountNumber": 5848735405624,
+      "status": "ACTIVE",
+      "id": "yOXyggb"
+    },
+    {
+      "currency": "USD",
+      "type": "SAVING",
+      "clientNumber": 1021,
+      "accountNumber": 8000385365013,
+      "status": "ACTIVE",
+      "id": "PqtpZvY"
+    },
+    {
+      "currency": "USD",
+      "type": "SAVING",
+      "clientNumber": 1003,
+      "accountNumber": 5340415828414,
+      "status": "CLOSED",
+      "id": "K--zfqA"
+    },
+    {
+      "currency": "EUR",
+      "type": "CURRENT",
+      "clientNumber": 1002,
+      "accountNumber": 2544980429309,
+      "status": "CLOSED",
+      "id": "vsw3qFl"
+    },
+    {
+      "currency": "GEL",
+      "type": "CURRENT",
+      "clientNumber": 1002,
+      "accountNumber": 3959780932359,
+      "status": "ACTIVE",
+      "id": "X51DlRd"
+    },
+    {
+      "currency": "GEL",
+      "type": "CURRENT",
+      "clientNumber": 1005,
+      "accountNumber": 3055075655937,
+      "status": "ACTIVE",
+      "id": "25sAhdZ"
+    },
+    {
+      "currency": "USD",
+      "type": "CURRENT",
+      "clientNumber": 1005,
+      "accountNumber": 2643968708362,
+      "status": "ACTIVE",
+      "id": "5Rj00Ob"
+    },
+    {
+      "currency": "EUR",
+      "type": "CURRENT",
+      "clientNumber": 1010,
+      "accountNumber": 2228152141164,
+      "status": "CLOSED",
+      "id": "9otVrjV"
+    },
+    {
+      "currency": "USD",
+      "type": "CURRENT",
+      "clientNumber": 1010,
+      "accountNumber": 1394617691162,
+      "status": "CLOSED",
+      "id": "munZ5c5"
+    },
+    {
+      "currency": "GEL",
+      "type": "CURRENT",
+      "clientNumber": 1010,
+      "accountNumber": 8601787368943,
+      "status": "CLOSED",
+      "id": "_g-S562"
+    },
+    {
+      "currency": "GEL",
+      "type": "SAVING",
+      "clientNumber": 1010,
+      "accountNumber": 3657657822358,
+      "status": "ACTIVE",
+      "id": "Kdv0Fj2"
+    },
+    {
+      "currency": "EUR",
+      "type": "SAVING",
+      "clientNumber": 1010,
+      "accountNumber": 1996629464313,
+      "status": "ACTIVE",
+      "id": "Z1xSESH"
+    },
+    {
+      "currency": "EUR",
+      "type": "CURRENT",
+      "clientNumber": 1018,
+      "accountNumber": 3931239216293,
+      "status": "ACTIVE",
+      "id": "ERcU_jR"
+    },
+    {
+      "currency": "GEL",
+      "type": "CURRENT",
+      "clientNumber": 1018,
+      "accountNumber": 3615835425666,
+      "status": "ACTIVE",
+      "id": "A3JcDFM"
+    },
+    {
+      "currency": "USD",
+      "type": "CURRENT",
+      "clientNumber": 1018,
+      "accountNumber": 8286248509081,
+      "status": "ACTIVE",
+      "id": "Sa1m4Bk"
+    },
+    {
+      "currency": "EUR",
+      "type": "CURRENT",
+      "clientNumber": 1004,
+      "accountNumber": 6860185858236,
+      "status": "ACTIVE",
+      "id": "ZU65eNo"
+    }
+  ],
+  "clients": [
     {
       "id": "2",
       "clientNumber": 1002,
@@ -64,27 +309,6 @@
       }
     },
     {
-      "id": "4",
-      "clientNumber": 1004,
-      "name": "Luka",
-      "lastName": "Tavadze",
-      "sex": "Male",
-      "personalNumber": "42345678901",
-      "mobileNumber": 593456789,
-      "addresses": {
-        "juridical": {
-          "city": "Tbilisi",
-          "country": "Georgia",
-          "address": "Some street 6"
-        },
-        "factual": {
-          "city": "Tbilisi",
-          "country": "Georgia",
-          "address": "Some street 6"
-        }
-      }
-    },
-    {
       "id": "3",
       "clientNumber": 1003,
       "name": "Nino",
@@ -92,27 +316,6 @@
       "sex": "Female",
       "personalNumber": "32345678901",
       "mobileNumber": 577123789,
-      "addresses": {
-        "juridical": {
-          "city": "Tbilisi",
-          "country": "Georgia",
-          "address": "Some street 6"
-        },
-        "factual": {
-          "city": "Tbilisi",
-          "country": "Georgia",
-          "address": "Some street 6"
-        }
-      }
-    },
-    {
-      "id": "7",
-      "clientNumber": 1007,
-      "name": "Mariam",
-      "lastName": "Gogoladze",
-      "sex": "Female",
-      "personalNumber": "72345678901",
-      "mobileNumber": 591234987,
       "addresses": {
         "juridical": {
           "city": "Tbilisi",
@@ -148,27 +351,6 @@
       }
     },
     {
-      "id": "8",
-      "clientNumber": 1008,
-      "name": "Irakli",
-      "lastName": "Shengelia",
-      "sex": "Male",
-      "personalNumber": "82345678901",
-      "mobileNumber": 598765432,
-      "addresses": {
-        "juridical": {
-          "city": "Tbilisi",
-          "country": "Georgia",
-          "address": "Some street 6"
-        },
-        "factual": {
-          "city": "Tbilisi",
-          "country": "Georgia",
-          "address": "Some street 6"
-        }
-      }
-    },
-    {
       "id": "6",
       "clientNumber": 1006,
       "name": "Elene",
@@ -186,27 +368,6 @@
           "city": "Tbilisi",
           "country": "Georgia",
           "address": "Some street 6"
-        }
-      }
-    },
-    {
-      "id": "11",
-      "clientNumber": 1011,
-      "name": "Giorgi",
-      "lastName": "Gogadze",
-      "sex": "Male",
-      "personalNumber": "11345678901",
-      "mobileNumber": 599987654,
-      "addresses": {
-        "juridical": {
-          "city": "Batumi",
-          "country": "Georgia",
-          "address": "Some street 12"
-        },
-        "factual": {
-          "city": "Batumi",
-          "country": "Georgia",
-          "address": "Some street 12"
         }
       }
     },
@@ -338,24 +499,23 @@
     },
     {
       "id": "13",
-      "clientNumber": 1013,
+      "clientNumber": "10134",
       "name": "Nino",
       "lastName": "Jorjadze",
       "sex": "Female",
       "personalNumber": "13345678901",
       "mobileNumber": 576123456,
       "addresses": {
-        "juridical": {
-          "city": "Kutaisi",
-          "country": "Georgia",
-          "address": "Some street 15"
-        },
         "factual": {
           "city": "Kutaisi",
-          "country": "Georgia",
-          "address": "Some street 15"
+          "country": "Georgia"
+        },
+        "juridical": {
+          "city": "Kutaisi",
+          "country": "Georgia"
         }
-      }
+      },
+      "avatar": null
     },
     {
       "id": "14",
